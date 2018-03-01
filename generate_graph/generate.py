@@ -33,6 +33,7 @@ def distance(n1, n2):
 	return math.sqrt(dx*dx + dy*dy)
 
 def unit_square_graph(N, A, seed=None):
+	R = math.sqrt(A/(N * math.pi))
 	if seed:
 		random.seed(seed)
 
@@ -40,13 +41,14 @@ def unit_square_graph(N, A, seed=None):
 	for _ in range(N):
 		nodes.append(Node(rand(), rand()))
 
-	R = math.sqrt(A/(N * math.pi))
-
-	for n1, n2 in itertools.product(nodes, repeat=2):
-		if distance(n1, n2) < R:
+	for n1, n2 in itertools.combinations(nodes, 2):
+		if n1 != n2 and distance(n1, n2) < R:
 			n1.edges.append(n2)
 			n2.edges.append(n1)
+
 	degrees = map((lambda x: len(x.edges)), nodes)
-	average_degree = reduce((lambda x, y: x + y/N), degrees)
+	average_degree = reduce((lambda acc, y: acc + (y/N)), degrees)
+
 	print(average_degree)
+
 graph = unit_square_graph(100,  2)
