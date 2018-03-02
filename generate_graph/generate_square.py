@@ -17,9 +17,9 @@ def calculate_radius_square(N, A):
 	from math import pi
 	return sqrt(A/(N * pi))
 
-def generate_random_points(N, A):
+def generate_random_points(N):
 	from util import random_node
-	return [random_node() for _ in range(N)]
+	return [random_node(node_number) for node_number in range(N)]
 
 def node_pairs(list):
 	from itertools import combinations
@@ -27,7 +27,7 @@ def node_pairs(list):
 
 def unit_square_graph(N, A):
 	R = calculate_radius_square(N, A)
-	nodes = generate_random_points(N, A)
+	nodes = generate_random_points(N)
 
 	for n1, n2 in node_pairs(nodes):
 		from util import distance2D
@@ -47,7 +47,7 @@ if __name__ == "__main__":
 	adjacency_list, R, total_edges, average_degree, max_degree, min_degree = unit_square_graph(1000,  2.5)
 
 	print("Radius:         %f" % R)
-	print("Total edges:    %f" % total_edges)
+	print("Total edges:    %d" % total_edges)
 	print("Average Degree: %f" % average_degree)
-	print("Max Degree:     %f" % max_degree)
-	print("Min Degree:     %f" % min_degree)
+	print("Max Degree:     %d" % max_degree)
+	print("Min Degree:     %d" % min_degree)

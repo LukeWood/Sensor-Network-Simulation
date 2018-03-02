@@ -1,7 +1,7 @@
-def random_node():
+def random_node(node_number=None):
 	from node import Node
-	from random import random as rand
-	return Node(rand(), rand())
+	from random import random
+	return Node(random(), random(), node_number=node_number)
 
 def distance2D(n1, n2):
 	from math import sqrt
@@ -19,5 +19,14 @@ def graph_stats(nodes):
 	average_degree = total_edges/N
 	return total_edges, average_degree, max_degree, min_degree
 
+def row_from_node(node, N):
+	edges = [0 for x in range(N)]
+	for connected_node in node.edges:
+		edges[connected_node.node_number] = 1
+	return edges
+
 def adjacency_list_from_node_list(nodes):
-	return []
+	N = len(nodes)
+	return list(
+		map((lambda node: row_from_node(node, N)), nodes)
+	)
