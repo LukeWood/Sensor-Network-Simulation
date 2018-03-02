@@ -18,36 +18,27 @@ def calculate_radius_square(N, A):
 	return sqrt(A/(N * pi))
 
 def generate_random_points(N):
-	from util import random_node
+	from .util import random_node
 	return [random_node(node_number) for node_number in range(N)]
 
-def node_pairs(list):
+def node_pairs(node_list):
 	from itertools import combinations
-	return combinations(list, 2)
+	return combinations(node_list, 2)
 
 def unit_square_graph(N, A):
 	R = calculate_radius_square(N, A)
 	nodes = generate_random_points(N)
 
 	for n1, n2 in node_pairs(nodes):
-		from util import distance2D
+		from .util import distance2D
 		if distance2D(n1, n2) <= R:
 			n1.edges.append(n2)
 			n2.edges.append(n1)
 
-	from util import graph_stats
-	total_edges, average_degree, max_degree, min_degree = graph_stats(nodes)
+	from .util import graph_stats
+	total_edges, average_degree, max_degree, min_degree, edge_distributions = graph_stats(nodes)
 
-	from util import adjacency_list_from_node_list
+	from .util import adjacency_list_from_node_list
 	adjacency_list = adjacency_list_from_node_list(nodes)
 
-	return adjacency_list, R, total_edges, average_degree, max_degree, min_degree
-
-if __name__ == "__main__":
-	adjacency_list, R, total_edges, average_degree, max_degree, min_degree = unit_square_graph(1000,  2.5)
-
-	print("Radius:         %f" % R)
-	print("Total edges:    %d" % total_edges)
-	print("Average Degree: %f" % average_degree)
-	print("Max Degree:     %d" % max_degree)
-	print("Min Degree:     %d" % min_degree)
+	return adjacency_list, R, total_edges, average_degree, max_degree, min_degree, edge_distributions

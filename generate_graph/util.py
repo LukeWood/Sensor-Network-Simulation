@@ -1,5 +1,5 @@
 def random_node(node_number=None):
-	from node import Node
+	from .node import Node
 	from random import random
 	return Node(random(), random(), node_number=node_number)
 
@@ -17,7 +17,9 @@ def graph_stats(nodes):
 	max_degree 	   = reduce((lambda acc, x: x if x > acc else acc), degrees)
 	min_degree 	   = reduce((lambda acc, x: x if x < acc else acc), degrees)
 	average_degree = total_edges/N
-	return total_edges, average_degree, max_degree, min_degree
+
+	edge_distributions = get_edge_distributions(degrees)
+	return total_edges, average_degree, max_degree, min_degree, edge_distributions
 
 def row_from_node(node, N):
 	edges = [0 for x in range(N)]
@@ -29,4 +31,18 @@ def adjacency_list_from_node_list(nodes):
 	N = len(nodes)
 	return list(
 		map((lambda node: row_from_node(node, N)), nodes)
+	)
+
+def increment_degree(acc, x):
+	acc[x] = acc[x] + 1
+	return acc
+
+def get_edge_distributions(degrees):
+	from functools import reduce
+	m = reduce((lambda acc, x: x if x > acc else acc), degrees)
+	baseline = [0 for x in range(m+1)]
+	return reduce(
+	 	increment_degree,
+		degrees,
+		baseline
 	)
