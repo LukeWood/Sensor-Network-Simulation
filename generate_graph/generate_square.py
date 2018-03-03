@@ -36,9 +36,9 @@ def unit_square_graph(N, A):
 			n2.edges.append(n1)
 
 	from .util import graph_stats
-	total_edges, average_degree, max_degree, min_degree, edge_distributions = graph_stats(nodes)
+	total_edges, average_degree, max_degree, min_degree = graph_stats(nodes)
 
 	from .util import adjacency_list_from_node_list
 	adjacency_list = adjacency_list_from_node_list(nodes)
 
-	return adjacency_list, R, total_edges, average_degree, max_degree, min_degree, edge_distributions
+	return adjacency_list, R, total_edges, average_degree, max_degree, min_degree

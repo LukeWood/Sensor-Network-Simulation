@@ -18,8 +18,7 @@ def graph_stats(nodes):
 	min_degree 	   = reduce((lambda acc, x: x if x < acc else acc), degrees)
 	average_degree = total_edges/N
 
-	edge_distributions = get_edge_distributions(degrees)
-	return total_edges, average_degree, max_degree, min_degree, edge_distributions
+	return total_edges, average_degree, max_degree, min_degree
 
 def row_from_node(node, N):
 	edges = [0 for x in range(N)]
@@ -36,13 +35,3 @@ def adjacency_list_from_node_list(nodes):
 def increment_degree(acc, x):
 	acc[x] = acc[x] + 1
 	return acc
-
-def get_edge_distributions(degrees):
-	from functools import reduce
-	m = reduce((lambda acc, x: x if x > acc else acc), degrees)
-	baseline = [0 for x in range(m+1)]
-	return reduce(
-	 	increment_degree,
-		degrees,
-		baseline
-	)

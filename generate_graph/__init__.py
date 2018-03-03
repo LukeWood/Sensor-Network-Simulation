@@ -9,6 +9,5 @@ Return
     average_degree = Float,
     max_degree = Int,
     min_degree = Int,
-    edge_distribution = List[Int]
 """
 from .generate_square import unit_square_graph
