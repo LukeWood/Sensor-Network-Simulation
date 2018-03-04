@@ -1,9 +1,8 @@
 def edge_density_histogram(degrees, max_degree, graph_topology="", name=None):
     import seaborn as sns
     import matplotlib.pyplot as plt
-    plt.clf()
-    plt.cla()
-    plt.close()
+    from .util import clear_chart
+    clear_chart()
     sns.distplot(degrees)
     plt.xlim(0, max_degree)
     plt.title("Degree Distribution for %d Nodes on the Shape: %s" % (len(degrees), graph_topology))

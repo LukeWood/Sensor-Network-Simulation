@@ -18,18 +18,31 @@ def plot_runtime_chart(Ns, A, output_dir=""):
     from generate_graphs import unit_square_graph
     from charts import runtime_chart
 
-    runtimes = [time_run(N, A) for N in Ns]
-    runtime_chart(Ns, runtimes, graph_topology="Square", name=output_dir)
+    print("Creating Runtime Chart")
+    runtimes = []
+    for i, N in enumerate(Ns):
+        from sys import stdout
+        print("Generating Graph of Size %d Nodes. Item %d/%d" % (N, i+1, len(Ns)))
+        stdout.write("\033[F")
+        runtimes.append(time_run(N, A))
+    runtime_chart(Ns, runtimes, graph_topology="Square", name="%sruntime_chart.png" % output_dir)
+    Print("\nDone Creating Runtime Chart")
 
-Ns = [
-    1000, 2000, 3000, 4000
-]
-As = [
-    5, 10, 25, 50, 100, 200
-]
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Generate the charts for square sensor network topology")
+    parser.add_argument("--runtimes",     dest='runtimes',     action='store_true')
+    parser.add_argument("--edge_density", dest='edge_density', action='store_true')
+    parser.set_defaults(runtimes=False, edge_density=False)
+    args = parser.parse_args()
 
-#for N in Ns:
-#    for A in As:
-#        plot_edge_densities_square(N, A, output_dir="outputs/square/")
+    Ns = [10, 20, 50, 100, 500, 1000, 1500, 2500, 3000, 4000, 5000, 7500, 10000, 12000 ]
+    A = 50
 
-plot_runtime_chart(Ns, 10)
+    if args.edge_density:
+        print("Creating Edge Density Chart")
+        for N in Ns:
+            plot_edge_densities_square(N, A, output_dir="outputs/square/")
+
+    if args.runtimes:
+        plot_runtime_chart(Ns, A, output_dir="outputs/square/")
