@@ -23,13 +23,17 @@ def node_pairs(node_list):
 	return combinations(node_list, 2)
 
 def get_nodes_for_bucket(x, y, buckets):
-	offsets = [0, 1]
+	offsets = [-1, 0, 1]
 	result = []
 	for dx in offsets:
 		for dy in offsets:
-			if x + dx < 0 or x + dy >= len(buckets):
+			if x + dx < 0:
 				continue
-			if y + dy < 0 or y + dy >= len(buckets):
+			if y + dy < 0:
+				continue
+			if x + dx >= len(buckets):
+				continue
+			if y + dy >= len(buckets):
 				continue
 			result = result + buckets[x+dx][y+dy]
 	return result
@@ -50,11 +54,12 @@ def connect_nodes(nodes, R):
 
 	for x in range(num_buckets_p):
 		for y in range(num_buckets_p):
+			base_nodes = buckets[x][y]
 			operation_nodes = get_nodes_for_bucket(x, y, buckets)
-			for n1, n2 in node_pairs(operation_nodes):
-				if distance2D(n1, n2) <= R:
-					n1.edges.append(n2)
-					n2.edges.append(n2)
+			for n1 in base_nodes:
+				for n2 in operation_nodes:
+					if distance2D(n1, n2) <= R:
+						n1.edges.append(n2)
 	return nodes
 
 def unit_square_graph(N, A):

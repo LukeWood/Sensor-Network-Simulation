@@ -50,4 +50,13 @@ if __name__ == "__main__":
 
     if args.test:
         from generate_graphs import unit_square_graph
-        adjacency_list, nodes = unit_square_graph(100, 5)
+        adjacency_list, nodes = unit_square_graph(5000, A)
+
+        from graph_stats import total_edges, average_degree, max_degree, min_degree
+
+        print("\n=== TEST RESULTS ===")
+        print("Expected Average Degree: %d" % A)
+        print("Average Degree:          %d" % average_degree(nodes))
+        print("Max Degree:              %d" % max_degree(nodes))
+        print("Min Degree:              %d" % min_degree(nodes))
+        print("=== TEST ENDING ===\n")
