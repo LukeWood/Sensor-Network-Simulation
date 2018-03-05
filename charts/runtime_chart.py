@@ -1,4 +1,4 @@
-def runtime_chart(Ns, runtimes, graph_topology="", name=None):
+def runtime_chart(Ns, runtimes, graph_topology="", name=None, expected_order=1):
     import seaborn as sns
     import matplotlib.pyplot as plt
     import numpy as np
@@ -10,7 +10,7 @@ def runtime_chart(Ns, runtimes, graph_topology="", name=None):
     plt.xlabel("Nodes")
     plt.ylabel("Runtime (seconds)")
     daters = pd.DataFrame(data={'N': Ns, 'runtimes': runtimes})
-    sns.lmplot('N', 'runtimes', data=daters)
+    sns.regplot('N', 'runtimes', data=daters, order=expected_order)
     plt.gca().set_xlim(left=0)
     plt.gca().set_ylim(bottom=0)
     if name:
