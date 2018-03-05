@@ -10,4 +10,4 @@ Return
     max_degree = Int,
     min_degree = Int,
 """
-from .generate_square import unit_square_graph
+from .generate_square import unit_square_graph, calculate_radius_square
