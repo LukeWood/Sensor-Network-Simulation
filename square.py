@@ -4,7 +4,7 @@ random.seed(time.time())
 
 def plot_edge_densities_square(N, A, output_dir=""):
     from generate_graphs import unit_square_graph
-    _, nodes = unit_square_graph(N, A)
+    nodes = unit_square_graph(N, A)
     from graph_stats import max_degree
     from charts import edge_density_histogram
     degrees = list(map((lambda x: len(x.edges)), nodes))
@@ -14,7 +14,7 @@ def time_run(N, A):
     from time import process_time
     from generate_graphs import unit_square_graph
     start = process_time()
-    adjacency_list, nodes = unit_square_graph(N, A)
+    nodes = unit_square_graph(N, A)
     end =   process_time()
     return end - start
 
@@ -49,7 +49,7 @@ if __name__ == "__main__":
         plot_edge_densities_square(N, A, output_dir="outputs/square/edge_density/")
 
     if args.runtimes:
-        Ns = [10, 20, 50, 100, 500, 1000, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 12000, 20000, 30000]
+        Ns = [10, 20, 50, 100, 500, 1000, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 12000, 20000, 30000, 50000, 100000]
         plot_runtime_chart(Ns, A,  output_dir="outputs/square/runtime/")
 
     if args.test:
@@ -57,7 +57,7 @@ if __name__ == "__main__":
         from generate_graphs import calculate_radius_square
 
         N = 4000
-        adjacency_list, nodes = unit_square_graph(N, A)
+        nodes = unit_square_graph(N, A)
 
         from graph_stats import total_edges, average_degree, max_degree, min_degree
 

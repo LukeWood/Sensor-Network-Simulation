@@ -1,4 +1,3 @@
-
 def distance2D(n1, n2):
 	from math import sqrt
 	dx = (n1.x - n2.x)

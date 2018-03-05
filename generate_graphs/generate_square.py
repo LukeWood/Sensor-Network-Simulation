@@ -40,7 +40,8 @@ def connect_nodes(nodes, R):
 	from math import floor
 	from .util import distance2D
 
-	num_buckets_p =  int(1/R)
+	num_buckets_p = int(1/R) - 1
+	num_buckets_p = 1 if num_buckets_p < 1 else num_buckets_p
 	buckets = []
 	for _ in range(num_buckets_p):
 		buckets.append([[] for _ in range(num_buckets_p)])
@@ -61,6 +62,8 @@ def connect_nodes(nodes, R):
 						n2.edges.append(n1)
 			for n1 in base_nodes:
 				for n2 in base_nodes:
+					#TODO(lukewood) do these nodes connect to themselves?
+					#is this desired behavior
 					if distance2D(n1, n2) <= R:
 						n1.edges.append(n2)
 	return nodes
@@ -71,7 +74,4 @@ def unit_square_graph(N, A):
 	nodes = generate_random_points(N)
 	nodes = connect_nodes(nodes, R)
 
-	from .util import adjacency_list_from_node_list
-	adjacency_list = adjacency_list_from_node_list(nodes)
-
-	return adjacency_list, nodes
+	return nodes
