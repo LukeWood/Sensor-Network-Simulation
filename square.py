@@ -33,7 +33,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate the charts for square sensor network topology")
     parser.add_argument("--runtimes",     dest='runtimes',     action='store_true')
     parser.add_argument("--edge_density", dest='edge_density', action='store_true')
-    parser.set_defaults(runtimes=False, edge_density=False)
+    parser.add_argument("--test",         dest='test',         action='store_true')
+    parser.set_defaults(runtimes=False, edge_density=False, test=False)
     args = parser.parse_args()
 
     Ns = [10, 20, 50, 100, 500, 1000, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 12000]
@@ -46,3 +47,7 @@ if __name__ == "__main__":
 
     if args.runtimes:
         plot_runtime_chart(Ns, A,  output_dir="outputs/square/runtime/")
+
+    if args.test:
+        from generate_graphs import unit_square_graph
+        adjacency_list, nodes = unit_square_graph(100, 5)
