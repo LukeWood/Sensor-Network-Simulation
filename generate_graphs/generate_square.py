@@ -15,37 +15,35 @@ def calculate_radius_square(N, A):
 	return sqrt(A/(N * pi))
 
 def generate_random_points(N):
-	from .util import random_node
-	return [random_node(node_number) for node_number in range(N)]
+	from numpy.random import uniform
+	from .node import Node
+	xs = uniform(0, 1, N)
+	ys = uniform(0, 1, N)
+	return [Node(xs[i], ys[i], node_number=i) for i in range(N)]
 
 def node_pairs(node_list):
 	from itertools import combinations
 	return combinations(node_list, 2)
 
-def get_nodes_for_bucket(x, y, buckets):
-	offsets = [-1, 0, 1]
+def get_adjacent_nodes_for_bucket(x, y, buckets):
+	offsets = [(0, 0), (1, -1), (1, 0), (1, 1), (0,1)]
 	result = []
-	for dx in offsets:
-		for dy in offsets:
-			if x + dx < 0:
-				continue
-			if y + dy < 0:
-				continue
-			if x + dx >= len(buckets):
-				continue
-			if y + dy >= len(buckets):
-				continue
-			result = result + buckets[x+dx][y+dy]
+	for dx, dy in offsets:
+		if x + dx >= len(buckets):
+			continue
+		if y + dy >= len(buckets):
+			continue
+		result = result + buckets[x+dx][y+dy]
 	return result
 
 def connect_nodes(nodes, R):
-	from math import ceil
+	from math import floor
 	from .util import distance2D
 
-	num_buckets_p = ceil(1/R) + 1
+	num_buckets_p =  int(1/R -1)**2
 	buckets = []
-	for _ in range(num_buckets_p+1):
-		buckets.append([[] for _ in range(num_buckets_p+1)])
+	for _ in range(num_buckets_p):
+		buckets.append([[] for _ in range(num_buckets_p)])
 
 	for node in nodes:
 		bucket_num_x = int(node.x * num_buckets_p)
@@ -55,15 +53,19 @@ def connect_nodes(nodes, R):
 	for x in range(num_buckets_p):
 		for y in range(num_buckets_p):
 			base_nodes = buckets[x][y]
-			operation_nodes = get_nodes_for_bucket(x, y, buckets)
+			operation_nodes = get_adjacent_nodes_for_bucket(x, y, buckets)
 			for n1 in base_nodes:
 				for n2 in operation_nodes:
+					if n1 == n2:
+						continue
 					if distance2D(n1, n2) <= R:
 						n1.edges.append(n2)
+						n2.edges.append(n1)
 	return nodes
 
 def unit_square_graph(N, A):
 	R = calculate_radius_square(N, A)
+
 	nodes = generate_random_points(N)
 	nodes = connect_nodes(nodes, R)
 

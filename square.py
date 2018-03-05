@@ -1,9 +1,13 @@
+import random
+import time
+random.seed(time.time())
+
 def plot_edge_densities_square(N, A, output_dir=""):
     from generate_graphs import unit_square_graph
-    adjacency_list, nodes = unit_square_graph(N, A)
+    _, nodes = unit_square_graph(N, A)
     from graph_stats import max_degree
     from charts import edge_density_histogram
-    degrees = list(map((lambda x: x.count(1)),adjacency_list))
+    degrees = list(map((lambda x: len(x.edges)), nodes))
     edge_density_histogram(degrees, max_degree(nodes), graph_topology="Square", name="%s%d_%d.png" % (output_dir, N, A))
 
 def time_run(N, A):
@@ -37,21 +41,21 @@ if __name__ == "__main__":
     parser.set_defaults(runtimes=False, edge_density=False, test=False)
     args = parser.parse_args()
 
-    Ns = [10, 20, 50, 100, 500, 1000, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 12000, 20000, 30000]
-    A = 50
+    A = 64
 
     if args.edge_density:
         print("Creating Edge Density Chart")
-        for N in Ns:
-            plot_edge_densities_square(N, A, output_dir="outputs/square/edge_density/")
+        N = 8000
+        plot_edge_densities_square(N, A, output_dir="outputs/square/edge_density/")
 
     if args.runtimes:
+        Ns = [10, 20, 50, 100, 500, 1000, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 12000, 20000, 30000]
         plot_runtime_chart(Ns, A,  output_dir="outputs/square/runtime/")
 
     if args.test:
         from generate_graphs import unit_square_graph
         from generate_graphs import calculate_radius_square
-        N = 5000
+        N = 200
         adjacency_list, nodes = unit_square_graph(N, A)
 
         from graph_stats import total_edges, average_degree, max_degree, min_degree
@@ -59,8 +63,8 @@ if __name__ == "__main__":
         print("\n=== TEST RESULTS ===")
         print("Graph Size:              %d" % N)
         print("Expected Average Degree: %d" % A)
-        print("R:                       %d" % calculate_square_radius(N, A))
-        print("Average Degree:          %d" % average_degree(nodes))
-        print("Max Degree:              %d" % max_degree(nodes))
-        print("Min Degree:              %d" % min_degree(nodes))
+        print("R:                       %f" % calculate_radius_square(N, A))
+        print("Average Degree:          %f" % average_degree(nodes))
+        print("Max Degree:              %f" % max_degree(nodes))
+        print("Min Degree:              %f" % min_degree(nodes))
         print("=== TEST ENDING ===\n")
