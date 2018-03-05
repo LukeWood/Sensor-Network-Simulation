@@ -62,8 +62,8 @@ def connect_nodes(nodes, R):
 						n2.edges.append(n1)
 			for n1 in base_nodes:
 				for n2 in base_nodes:
-					#TODO(lukewood) do these nodes connect to themselves?
-					#is this desired behavior
+					if n1 == n2:
+						continue
 					if distance2D(n1, n2) <= R:
 						n1.edges.append(n2)
 	return nodes
