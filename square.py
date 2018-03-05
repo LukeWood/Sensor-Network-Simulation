@@ -26,7 +26,7 @@ def plot_runtime_chart(Ns, A, output_dir=""):
         stdout.write("\033[F")
         runtimes.append(time_run(N, A))
     runtime_chart(Ns, runtimes, graph_topology="Square", name="%sruntime_chart.png" % output_dir)
-    Print("\nDone Creating Runtime Chart")
+    print("\nDone Creating Runtime Chart")
 
 if __name__ == "__main__":
     import argparse
@@ -45,4 +45,4 @@ if __name__ == "__main__":
             plot_edge_densities_square(N, A, output_dir="outputs/square/")
 
     if args.runtimes:
-        plot_runtime_chart(Ns, A, output_dir="outputs/square/")
+        plot_runtime_chart(Ns, A,  output_dir="outputs/square/")
