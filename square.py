@@ -36,13 +36,13 @@ if __name__ == "__main__":
     parser.set_defaults(runtimes=False, edge_density=False)
     args = parser.parse_args()
 
-    Ns = [10, 20, 50, 100, 500, 1000, 1500, 2500, 3000, 4000, 5000, 7500, 10000, 12000 ]
+    Ns = [10, 20, 50, 100, 500, 1000, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 12000 ]
     A = 50
 
     if args.edge_density:
         print("Creating Edge Density Chart")
         for N in Ns:
-            plot_edge_densities_square(N, A, output_dir="outputs/square/")
+            plot_edge_densities_square(N, A, output_dir="outputs/square/edge_density/")
 
     if args.runtimes:
-        plot_runtime_chart(Ns, A,  output_dir="outputs/square/")
+        plot_runtime_chart(Ns, A,  output_dir="outputs/square/runtime/")
