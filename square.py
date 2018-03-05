@@ -56,7 +56,7 @@ if __name__ == "__main__":
         from generate_graphs import unit_square_graph
         from generate_graphs import calculate_radius_square
 
-        N = 4000
+        N = 20000
         nodes = unit_square_graph(N, A)
 
         from graph_stats import total_edges, average_degree, max_degree, min_degree
