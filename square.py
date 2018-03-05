@@ -25,7 +25,7 @@ def plot_runtime_chart(Ns, A, output_dir=""):
         print("Generating Graph of Size %d Nodes. Item %d/%d" % (N, i+1, len(Ns)))
         stdout.write("\033[F")
         runtimes.append(time_run(N, A))
-    runtime_chart(Ns, runtimes, graph_topology="Square", name="%sruntime_chart.png" % output_dir, expected_order=2)
+    runtime_chart(Ns, runtimes, graph_topology="Square", name="%sruntime_chart.png" % output_dir, expected_order=1)
     print("\nDone Creating Runtime Chart")
 
 if __name__ == "__main__":
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     parser.set_defaults(runtimes=False, edge_density=False, test=False)
     args = parser.parse_args()
 
-    Ns = [10, 20, 50, 100, 500, 1000, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 12000]
+    Ns = [10, 20, 50, 100, 500, 1000, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 12000, 20000, 30000]
     A = 50
 
     if args.edge_density:
@@ -50,12 +50,16 @@ if __name__ == "__main__":
 
     if args.test:
         from generate_graphs import unit_square_graph
-        adjacency_list, nodes = unit_square_graph(5000, A)
+        from generate_graphs import calculate_radius_square
+        N = 5000
+        adjacency_list, nodes = unit_square_graph(N, A)
 
         from graph_stats import total_edges, average_degree, max_degree, min_degree
 
         print("\n=== TEST RESULTS ===")
+        print("Graph Size:              %d" % N)
         print("Expected Average Degree: %d" % A)
+        print("R:                       %d" % calculate_square_radius(N, A))
         print("Average Degree:          %d" % average_degree(nodes))
         print("Max Degree:              %d" % max_degree(nodes))
         print("Min Degree:              %d" % min_degree(nodes))
