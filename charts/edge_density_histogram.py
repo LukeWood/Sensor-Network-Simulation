@@ -8,8 +8,6 @@ def edge_density_histogram(degrees, max_degree, graph_topology="", name=None):
     for d in degrees:
         yvals[d] = yvals[d] + 1
     ax = sns.barplot(x=list(range(max_degree+1)), y=yvals)
-    plt.xlim(0, max_degree)
-
     plt.title("Degree Distribution for %d Nodes on the Shape: %s" % (len(degrees), graph_topology))
     plt.xlabel("Degree")
     plt.ylabel("Frequency")

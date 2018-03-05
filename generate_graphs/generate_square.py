@@ -26,7 +26,7 @@ def node_pairs(node_list):
 	return combinations(node_list, 2)
 
 def get_adjacent_nodes_for_bucket(x, y, buckets):
-	offsets = [(0, 0), (1, -1), (1, 0), (1, 1), (0,1)]
+	offsets = [(1, -1), (1, 0), (1, 1), (0,1)]
 	result = []
 	for dx, dy in offsets:
 		if x + dx >= len(buckets):
@@ -40,7 +40,7 @@ def connect_nodes(nodes, R):
 	from math import floor
 	from .util import distance2D
 
-	num_buckets_p =  int(1/R -1)**2
+	num_buckets_p =  int(1/R)
 	buckets = []
 	for _ in range(num_buckets_p):
 		buckets.append([[] for _ in range(num_buckets_p)])
@@ -56,11 +56,13 @@ def connect_nodes(nodes, R):
 			operation_nodes = get_adjacent_nodes_for_bucket(x, y, buckets)
 			for n1 in base_nodes:
 				for n2 in operation_nodes:
-					if n1 == n2:
-						continue
 					if distance2D(n1, n2) <= R:
 						n1.edges.append(n2)
 						n2.edges.append(n1)
+			for n1 in base_nodes:
+				for n2 in base_nodes:
+					if distance2D(n1, n2) <= R:
+						n1.edges.append(n2)
 	return nodes
 
 def unit_square_graph(N, A):

@@ -55,7 +55,8 @@ if __name__ == "__main__":
     if args.test:
         from generate_graphs import unit_square_graph
         from generate_graphs import calculate_radius_square
-        N = 200
+
+        N = 4000
         adjacency_list, nodes = unit_square_graph(N, A)
 
         from graph_stats import total_edges, average_degree, max_degree, min_degree
