@@ -39,7 +39,9 @@ if __name__ == "__main__":
     parser.add_argument("--edge_density", dest='edge_density', action='store_true')
     parser.add_argument("--test",         dest='test',         action='store_true')
     parser.add_argument("--benchmarks",   dest='benchmarks',   action='store_true')
-    parser.set_defaults(runtimes=False, edge_density=False, test=False, benchmarks=False)
+    parser.add_argument("--draw",   dest='draw',   action='store_true')
+
+    parser.set_defaults(runtimes=False, edge_density=False, test=False, benchmarks=False, draw=False)
     args = parser.parse_args()
 
     A = 64
@@ -63,7 +65,7 @@ if __name__ == "__main__":
         from generate_graphs import unit_disc_graph
         from generate_graphs import calculate_radius_disc
 
-        N = 20000
+        N = 15000
         nodes = unit_disc_graph(N, A)
 
         from graph_stats import total_edges, average_degree, max_degree, min_degree
@@ -76,3 +78,9 @@ if __name__ == "__main__":
         print("Max Degree:              %f" % max_degree(nodes))
         print("Min Degree:              %f" % min_degree(nodes))
         print("=== TEST ENDING ===\n")
+
+    if args.draw:
+        from generate_graphs import unit_disc_graph
+        from charts import draw_nodes
+        nodes = unit_disc_graph(1000, A)
+        draw_nodes(nodes)

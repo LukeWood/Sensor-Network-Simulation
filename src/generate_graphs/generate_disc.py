@@ -5,18 +5,22 @@ Generating disc topology
 def calculate_radius_disc(N, A):
 	from math import sqrt
 	from math import pi
-	return sqrt(A/(N))
+	return sqrt(A/N)/2
 
 def generate_random_points_disc(N):
 	from .node import Node
+	from .util import distance2D
 	from random import random
-	from math import sin
-	from math import cos
-	from math import pi
+	center_node = Node(.5, .5)
 	result = []
-	for n in range(N):
-		theta = 2 * pi * random()
-		result.append(Node(cos(theta), sin(theta), node_number=n))
+	n = 0;
+	while n < N:
+		x = random()
+		y = random()
+		node = Node(x, y, node_number=n)
+		if distance2D(node, center_node) <= .5:
+			result.append(node)
+			n = n + 1
 	return result
 
 def get_adjacent_nodes_for_bucket(x, y, buckets):
@@ -35,15 +39,15 @@ def connect_nodes(nodes, R):
 	from .util import distance2D
 	from math import pi
 
-	num_buckets_p = int(2*pi*(1/R)) - 1
+	num_buckets_p = int((1/R)) - 1
 	num_buckets_p = 1 if num_buckets_p < 1 else num_buckets_p
 	buckets = []
 	for _ in range(num_buckets_p):
 		buckets.append([[] for _ in range(num_buckets_p)])
 
 	for node in nodes:
-		bucket_num_x = int(node.x * num_buckets_p)
-		bucket_num_y = int(node.y * num_buckets_p)
+		bucket_num_x = int((1+(node.x))/2 * num_buckets_p)
+		bucket_num_y = int((1+(node.y))/2 * num_buckets_p)
 		buckets[bucket_num_x][bucket_num_y].append(node)
 
 	for x in range(num_buckets_p):
