@@ -82,5 +82,6 @@ if __name__ == "__main__":
     if args.draw:
         from generate_graphs import unit_disc_graph
         from charts import draw_nodes
-        nodes = unit_disc_graph(1000, A)
-        draw_nodes(nodes)
+        N = 1000
+        nodes = unit_disc_graph(N, A)
+        draw_nodes(nodes, topology="disc", num_nodes=N, output_dir="../results/disc/drawing/")
