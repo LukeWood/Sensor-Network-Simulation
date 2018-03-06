@@ -36,6 +36,15 @@ def get_adjacent_nodes_for_bucket(x, y, buckets):
 		result = result + buckets[x+dx][y+dy]
 	return result
 
+def brute_force_connect(nodes, R):
+    from .util import distance2D
+    from itertools import combinations
+    for n1, n2 in combinations(nodes, 2):
+        if distance2D(n1, n2) < R:
+            n1.edges.append(n2)
+            n2.edges.append(n1)
+    return nodes
+
 def connect_nodes(nodes, R):
 	from math import floor
 	from .util import distance2D
@@ -67,6 +76,12 @@ def connect_nodes(nodes, R):
 					if distance2D(n1, n2) <= R:
 						n1.edges.append(n2)
 	return nodes
+
+def brute_force_unit_square_graph(N, A):
+    R = calculate_radius_square(N, A)
+    nodes = generate_random_points(N)
+    nodes = brute_force_connect(nodes, R)
+    return nodes
 
 def unit_square_graph(N, A):
 	R = calculate_radius_square(N, A)

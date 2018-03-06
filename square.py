@@ -38,7 +38,8 @@ if __name__ == "__main__":
     parser.add_argument("--runtimes",     dest='runtimes',     action='store_true')
     parser.add_argument("--edge_density", dest='edge_density', action='store_true')
     parser.add_argument("--test",         dest='test',         action='store_true')
-    parser.set_defaults(runtimes=False, edge_density=False, test=False)
+    parser.add_argument("--benchmarks",   dest='benchmarks',   action='store_true')
+    parser.set_defaults(runtimes=False, edge_density=False, test=False, benchmarks=False)
     args = parser.parse_args()
 
     A = 64
@@ -51,6 +52,12 @@ if __name__ == "__main__":
     if args.runtimes:
         Ns = [10, 20, 50, 100, 500, 1000, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 12000, 20000, 30000, 50000, 100000]
         plot_runtime_chart(Ns, A,  output_dir="outputs/square/runtime/")
+
+    if args.benchmarks:
+        from graph_stats import gather_statistics
+        from generate_graphs import unit_square_graph
+        Ns = [1000, 5000, 25000, 50000, 100000]
+        gather_statistics(Ns, A, unit_square_graph, output_dir="outputs/square/benchmarks/")
 
     if args.test:
         from generate_graphs import unit_square_graph

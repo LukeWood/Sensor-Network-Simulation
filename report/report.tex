@@ -1,6 +1,7 @@
 \documentclass{article}
 
 \usepackage{amsmath}
+\usepackage{float}
 
 \usepackage{graphicx}
 \graphicspath{ {../outputs/} }
@@ -28,15 +29,34 @@
 	\end{enumerate}
 	This report is the first of the series and  will describe an implementation for a linear time algorithm to generate graphs consisting of N vertices with an average degree of A on the geometric topologies of: unit square, unit disc, unit sphere.
 
-	\begin{tabular}{ |c|c|c| }
+	\begin{center}
+	  \begin{table}[H]
+			\begin{tabular}{ |c|c|c|c|c|c| }
+				\hline
+				Nodes & Expected Avg. Deg. & Real Avg. Deg. & Max Deg. & Min Deg. & Seconds \\
+        \hline
+        1000 & 64 & 57.568000 & 82 & 10 & 0.279913 \\
+        \hline
+        5000 & 64 & 60.658400 & 87 & 15 & 0.840636 \\
+        \hline
+        25000 & 64 & 62.504080 & 98 & 11 & 3.828407 \\
+        \hline
+        50000 & 64 & 62.986840 & 100 & 20 & 8.938070 \\
+        \hline
+        100000 & 64 & 63.258520 & 102 & 18 & 14.938207 \\
+        \hline
 
-	\end{tabular}
+			\end{tabular}
+			\caption{Data on graphs generated with the square topology}
+		\end{table}
+	\end{center}
 
   \subsection{Programming Environment Description}
   	The implementation of the algorithm used to gather the data supporting this report was gathered on a 15 inch Macbook pro 2017 with a 2.9 GHz Intel Core i7 processor and 16 GB of RAM.
 
   \section{Reduction to Practice}
-
+	  \subsection{Data Structure Design}
+	  \subsection{Algorithm Description}
   In order to ensure that average degree of the nodes is close to the desired average degree we define a radius surrounding each node.
   The formulas to find the radius for each topology is derived from the equations found in the paper Bipartite Grid Partitioning of a Random Geometric Graph\cite{chen2017bipartite}.
   The formula used to find this radius varies for each graph tolopogy and can be found in the table displayed below:
@@ -53,17 +73,50 @@
 	  \hline
   \end{tabular}
 
-  \begin{figure}[!htb]
-    \centering
-    \includegraphics[width=1 \textwidth]{square/runtime/runtime_chart_naive}
-    \caption{Data on the Runtime of the $O(n^2)$ Algorithm}
-  \end{figure}
+	  \subsection{Algorithm Engineering}
+	  Originally I had a brute force algorithm that ran in $O(n^2)$ time.
+	  This quickly became problematic as the algorithm took upwards of 200 seconds to run on input size of only 12,000.
+	  \begin{figure}[H]
+		\centering
+		\includegraphics[width=1 \textwidth]{square/runtime/runtime_chart_naive}
+		\caption{Runtimes of the $O(n^2)$ Algorithm}
+	  \end{figure}
 
-  \begin{figure}[!htb]
-    \centering
-    \includegraphics[width=1 \textwidth]{square/runtime/runtime_chart}
-    \caption{Data on the Runtime of the $O(n)$ Algorithm}
-  \end{figure}
+
+	  To fix this, I overhauled the algorithm to be $O(n)$.
+	  I did this by implementing the cell method described above in the Algorithm Description section as well as in Chen's paper Bipartite Grid Partitioning of a Random Geometric Graph\cite{chen2017bipartite}.
+	  \begin{figure}[H]
+		\centering
+		\includegraphics[width=1 \textwidth]{square/runtime/runtime_chart}
+		\caption{Runtimes of the $O(n)$ Algorithm}
+	  \end{figure}
+
+	  I have also included a table to compare some of the runtimes for the same size inputs below.
+
+	  \begin{center}
+	  \begin{table}[H]
+		\begin{tabular}{ |c|c|c| }
+			\hline
+			Nodes & $O(n^2)$ & $O(n)$ \\
+			\hline
+      1000 & 0.258400 & 0.657174 \\
+      \hline
+      2000 & 0.382116 & 2.630040 \\
+      \hline
+      3000 & 0.473916 & 5.874501 \\
+      \hline
+      5000 & 0.831753 & 16.809004 \\
+      \hline
+      10000 & 1.560216 & 65.398991 \\
+			\hline
+		\end{tabular}
+		\caption{Runtimes of the $O(n)$ and $O(n^2)$ algorithms in seconds}
+	  \end{table}
+	  \end{center}
+
+	  The $O(n)$ algorithm is far superior even on small input sizes such as 1000.  
+
+	\subsection{Verification}
 
 \section{Result Summary}
   The algorithm I created is clearly $O(n)$

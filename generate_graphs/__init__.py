@@ -11,3 +11,4 @@ Return
     min_degree = Int,
 """
 from .generate_square import unit_square_graph, calculate_radius_square
+from .generate_square import brute_force_unit_square_graph
