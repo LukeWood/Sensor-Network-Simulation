@@ -5,8 +5,8 @@
 \usepackage{graphicx}
 \graphicspath{ {../outputs/} }
 
-\usepackage{biblatex}
-\bibliography{citations}
+\usepackage[style=numeric, backend=bibtex8]{biblatex}
+\addbibresource{citations.bib}
 
 \begin{document}
 
@@ -15,18 +15,26 @@
   \maketitle
 
   \section{Executive Summary}
-	Wireless Sensor Networks can be incredibly expensive to deploy and test which makes them an excellent candidate for simulated testing.
-	Vlady Ravelomananana and Hichem Kenniche from the University of Paris first explored the concept of using random geometric graphs to attempt to model wireless sensor networks \cite{kenniche2010random}.
-	In this report I will describe the implementation I have created for a linear time algorithm to generate graphs consisting of N vertices with an average degree of A on the geometric topologies of: unit square, unit disc, unit sphere.
   \subsection{Introduction and Summary}
-	The most powerful part of my implementation is the highly maintainable code combined with strong performance.
-	As a functional programming enthusiast, I first wished to use Elixir to solve this problem but quickly realized that the enforcement of immutability by the erlangVM would be problematic going forward.
-	Due to the need for mutable data I decided to go with python for my implementation of part one.
-	Despite choosing to use python, I really dislike the style most python programmers use and find it ambiguous and confusing in many cases.
-	To counteract this, I employed functional programming patterns inside my python implementation such as decoupling all of my code as much as possible, explicitly importing modules for the function they are used in, and avoiding branching on conditionals whenever possible.
-	I believe that these helped me create low bug code.
+	Wireless Sensor Networks can be incredibly expensive to deploy and test which makes them an excellent candidate for simulated testing.
+	Vlady Ravelomananana and Hichem Kenniche from the University of Paris first explored the concept of using random geometric graphs (RGGs) to attempt to model wireless sensor networks \cite{kenniche2010random}.
+	RGGs can be used as a relatively cheap way to gather valuable information about how wireless sensor networks can function and communicate.
+	Through a series of reports	I will be:
+	\begin{enumerate}
+		\item Generating RGGs on the geometries of a unit square, unit disc, and unit sphere
+		\item Color the generated graph in linear time using smallest vertex last ordering (TODO check)
+		\item Find the terminal clique in the generated RGGs
+		\item Find a selection of bipartite subgraphs producted by an algorithm for coloring
+	\end{enumerate}
+	This report is the first of the series and  will describe an implementation for a linear time algorithm to generate graphs consisting of N vertices with an average degree of A on the geometric topologies of: unit square, unit disc, unit sphere.
+
+	\begin{tabular}{ |c|c|c| }
+
+	\end{tabular}
+
   \subsection{Programming Environment Description}
-	I developed and tested this program on a 15 inch Macbook 2017 with an i7 processor and 16 GB of ram.
+  	The implementation of the algorithm used to gather the data supporting this report was gathered on a 15 inch Macbook pro 2017 with a 2.9 GHz Intel Core i7 processor and 16 GB of RAM.
+
   \section{Reduction to Practice}
 
   In order to ensure that average degree of the nodes is close to the desired average degree we define a radius surrounding each node.
@@ -37,7 +45,7 @@
 	  \hline
 	  Topology & Equation in Chen's Paper & Equation for Radius Derive from Chen's \\
 	  \hline
-	  Unit Square & $d(G) \approx N\pi r^2 $ & $r = sqrt(\dfrac{d(G)}{N\pi})$ \\ 
+	  Unit Square & $d(G) \approx N\pi r^2 $ & $r = sqrt(\dfrac{d(G)}{N\pi})$ \\
 	  \hline
 	  Unit Disc   & & \\
 	  \hline

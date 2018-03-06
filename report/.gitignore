@@ -3,3 +3,6 @@
 *.bcf
 *.dvi
 *.run.xml
+*blx.bib
+*.bbl
+*.blg
