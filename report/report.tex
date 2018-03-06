@@ -102,15 +102,17 @@
 
     \begin{tabular}{ |c|c|c| }
   	  \hline
-  	  Topology & Equation in Chen's Paper & Equation for Radius Derive from Chen's \\
+  	  Topology & Equation Used to Derive Radius & Radius Equation \\
   	  \hline
   	  Unit Square & $d(G) \approx N\pi r^2 $ & $r = sqrt(\dfrac{d(G)}{N\pi})$ \\
   	  \hline
-  	  Unit Disc & & \\
+  	  Unit Disc & $r = sqrt(\dfrac{d(G)}{N\pi})$ & $r = sqrt(\dfrac{d(G)}{N})$ \\
   	  \hline
   	  Unit Sphere & & \\
   	  \hline
     \end{tabular}
+
+    To derive the disc radius formula, I simply multiplied the unit square formula by pi because that is the amount of extra area that the unit disc has over the unit square
 
 	  \subsection{Algorithm Engineering}
 	  Originally I had a brute force algorithm that ran in $O(n^2)$ time.

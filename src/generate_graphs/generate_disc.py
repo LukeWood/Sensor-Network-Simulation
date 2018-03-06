@@ -5,7 +5,7 @@ Generating disc topology
 def calculate_radius_disc(N, A):
 	from math import sqrt
 	from math import pi
-	return sqrt(A/(N * pi))
+	return sqrt(A/(N))
 
 def generate_random_points_disc(N):
 	from .node import Node
