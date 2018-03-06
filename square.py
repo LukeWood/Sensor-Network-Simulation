@@ -50,7 +50,7 @@ if __name__ == "__main__":
         plot_edge_densities_square(N, A, output_dir="outputs/square/edge_density/")
 
     if args.runtimes:
-        Ns = [10, 20, 50, 100, 500, 1000, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 12000, 20000, 30000, 50000, 100000]
+        Ns = [1000, 4000, 8000, 16000, 32000]
         plot_runtime_chart(Ns, A,  output_dir="outputs/square/runtime/")
 
     if args.benchmarks:

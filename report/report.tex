@@ -51,27 +51,39 @@
 		\end{table}
 	\end{center}
 
+  Currently, my implementation has support for:
+  \begin{enumerate}
+    \item Generating a unit square topology RGG
+    \item Converting that RGG to an Adjacency List
+    \item Serializing Adjacency Lists to files
+  \end{enumerate}
+  Being able to serialize the Adjacency Lists to files is a noteworthy feature as if there are algorithms that require faster runtimes than a dynamically typed language can support (such as python) we can still generate the RGGs from my implementation and use them elsewhere.
+
   \subsection{Programming Environment Description}
   	The implementation of the algorithm used to gather the data supporting this report was gathered on a 15 inch Macbook pro 2017 with a 2.9 GHz Intel Core i7 processor and 16 GB of RAM.
-
+    The computer is running macOS High Sierra.
+    The graph generation is written in python 3 as generating and connection a graph is not super computationally expensive with even decently large inputs such as 100000.
+    The later algorithms may be implemented in a different language such as Elixir to get high levels of concurrency and higher efficiency due to type inference (as opposed to pythons dynamic typing
+    )
   \section{Reduction to Practice}
 	  \subsection{Data Structure Design}
+    In the generation portion of this project I use
 	  \subsection{Algorithm Description}
-  In order to ensure that average degree of the nodes is close to the desired average degree we define a radius surrounding each node.
-  The formulas to find the radius for each topology is derived from the equations found in the paper Bipartite Grid Partitioning of a Random Geometric Graph\cite{chen2017bipartite}.
-  The formula used to find this radius varies for each graph tolopogy and can be found in the table displayed below:
+    In order to ensure that average degree of the nodes is close to the desired average degree we define a radius surrounding each node.
+    The formulas to find the radius for each topology is derived from the equations found in the paper Bipartite Grid Partitioning of a Random Geometric Graph\cite{chen2017bipartite}.
+    The formula used to find this radius varies for each graph tolopogy and can be found in the table displayed below:
 
-  \begin{tabular}{ |c|c|c| }
-	  \hline
-	  Topology & Equation in Chen's Paper & Equation for Radius Derive from Chen's \\
-	  \hline
-	  Unit Square & $d(G) \approx N\pi r^2 $ & $r = sqrt(\dfrac{d(G)}{N\pi})$ \\
-	  \hline
-	  Unit Disc   & & \\
-	  \hline
-	  Unit Sphere & & \\
-	  \hline
-  \end{tabular}
+    \begin{tabular}{ |c|c|c| }
+  	  \hline
+  	  Topology & Equation in Chen's Paper & Equation for Radius Derive from Chen's \\
+  	  \hline
+  	  Unit Square & $d(G) \approx N\pi r^2 $ & $r = sqrt(\dfrac{d(G)}{N\pi})$ \\
+  	  \hline
+  	  Unit Disc   & & \\
+  	  \hline
+  	  Unit Sphere & & \\
+  	  \hline
+    \end{tabular}
 
 	  \subsection{Algorithm Engineering}
 	  Originally I had a brute force algorithm that ran in $O(n^2)$ time.
@@ -114,12 +126,30 @@
 	  \end{table}
 	  \end{center}
 
-	  The $O(n)$ algorithm is far superior even on small input sizes such as 1000.  
+	  The $O(n)$ algorithm is far superior even on small input sizes such as 1000.
 
 	\subsection{Verification}
 
 \section{Result Summary}
-  The algorithm I created is clearly $O(n)$
+  \subsection{Edge Density}
+  As expected I got a gaussian distribution for my edge densities.
+  \begin{figure}[H]
+  \centering
+  \includegraphics[width=1 \textwidth]{square/edge_density/8000_64.png}
+  \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64}
+  \end{figure}
+
+  \subsection{Performance Rates}
+  \begin{center}
+	  \begin{table}[H]
+		  \begin{tabular}{ |c|c|c| }
+			\hline
+			Nodes & Topology & Runtime \\
+			\hline
+		  \end{tabular}
+		  \caption{Runtimes of the $O(n)$ vertex connection algorithm}
+	  \end{table}
+  \end{center}
 
 \printbibliography
 
