@@ -2,6 +2,7 @@
 
 \usepackage{amsmath}
 \usepackage{float}
+\usepackage{csvsimple}
 
 \usepackage{graphicx}
 \graphicspath{ {../results/} }
@@ -36,21 +37,7 @@
 
 	\begin{center}
 	  \begin{table}[H]
-			\begin{tabular}{ |c|c|c|c|c|c| }
-				\hline
-				Nodes & Expected Avg. Deg. & Real Avg. Deg. & Max Deg. & Min Deg. & Seconds \\
-				\hline
-				1000 & 64 & 57.568000 & 82 & 10 & 0.279913 \\
-				\hline
-				5000 & 64 & 60.658400 & 87 & 15 & 0.840636 \\
-				\hline
-				25000 & 64 & 62.504080 & 98 & 11 & 3.828407 \\
-				\hline
-				50000 & 64 & 62.986840 & 100 & 20 & 8.938070 \\
-				\hline
-				100000 & 64 & 63.258520 & 102 & 18 & 14.938207 \\
-				\hline
-			\end{tabular}
+      \csvautotabular{../results/square/benchmarks/data.csv}
 			\caption{Data on Graphs Generated with the Square Topology}
 		\end{table}
 	\end{center}
@@ -63,21 +50,7 @@
 
   \begin{center}
 	  \begin{table}[H]
-			\begin{tabular}{ |c|c|c|c|c|c| }
-				\hline
-				Nodes & Expected Avg. Deg. & Real Avg. Deg. & Max Deg. & Min Deg. & Seconds \\
-				\hline
-        1000 & 64 & 56.162000 & 82 & 25 & 0.441284 \\
-        \hline
-        5000 & 64 & 60.497600 & 89 & 25 & 2.397530 \\
-        \hline
-        25000 & 64 & 62.643200 & 98 & 18 & 11.172472 \\
-        \hline
-        50000 & 64 & 63.038800 & 99 & 20 & 22.594001 \\
-        \hline
-        100000 & 64 & 63.343620 & 97 & 17 & 48.280071 \\
-        \hline
-			\end{tabular}
+      \csvautotabular{../results/disc/benchmarks/data.csv}
 			\caption{Data on Graphs Generated with the Disc Topology}
 		\end{table}
 	\end{center}
@@ -225,6 +198,8 @@
 
 	  The $O(n)$ algorithm is far superior even on small input sizes such as 1000.
 
+    I originally was using a python object to store the data of each node but instead switched over to a statically indexed tuple.
+
 	\subsection{Verification}
 		One way that we verified our results was checking the distribution of edge densities in our graph.
 		We expect to see a gaussian distribution in the edge densities with the center being around our calculated radius.
@@ -235,21 +210,24 @@
 \section{Result Summary}
   \subsection{Edge Density}
   As expected I got a gaussian distribution for my edge densities.
+  This is apparent in the attached edge distribution charts for each topology
   \begin{figure}[H]
   \centering
   \includegraphics[width=1 \textwidth]{square/edge_density/8000_64.png}
-  \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64}
+  \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Square}
+  \end{figure}
+
+  \begin{figure}[H]
+  \centering
+  \includegraphics[width=1 \textwidth]{disc/edge_density/8000_64.png}
+  \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Disc}
   \end{figure}
 
   \subsection{Performance Rates}
   \begin{center}
 	  \begin{table}[H]
-		  \begin{tabular}{ |c|c|c| }
-			\hline
-			Nodes & Topology & Runtime \\
-			\hline
-		  \end{tabular}
-		  \caption{Runtimes of the $O(n)$ vertex connection algorithm}
+		  \csvautotabular{../results/shared/generation_speeds.csv}
+		  \caption{Runtimes of the $O(n)$ Graph Generations in Seconds}
 	  \end{table}
   \end{center}
 

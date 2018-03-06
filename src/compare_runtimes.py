@@ -1,4 +1,4 @@
-from generate_graphs import unit_square_graph 
+from generate_graphs import unit_square_graph
 from generate_graphs import brute_force_unit_square_graph
 
 Ns = [1000, 2000, 3000, 5000, 10000]
