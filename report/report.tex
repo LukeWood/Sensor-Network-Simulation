@@ -53,7 +53,8 @@
 
   Currently, my implementation has support for:
   \begin{enumerate}
-    \item Generating a unit square topology RGG
+    \item Generating a RGG with a unit square topology
+    \item Generating a RGG with a unit disc topology
     \item Converting that RGG to an Adjacency List
     \item Serializing Adjacency Lists to files
   \end{enumerate}
@@ -63,12 +64,34 @@
   	The implementation of the algorithm used to gather the data supporting this report was gathered on a 15 inch Macbook pro 2017 with a 2.9 GHz Intel Core i7 processor and 16 GB of RAM.
     The computer is running macOS High Sierra.
     The graph generation is written in python 3 as generating and connection a graph is not super computationally expensive with even decently large inputs such as 100000.
-    The later algorithms may be implemented in a different language such as Elixir to get high levels of concurrency and higher efficiency due to type inference (as opposed to pythons dynamic typing
-    )
+    The later algorithms may be implemented in a different language such as Elixir to get high levels of concurrency and higher efficiency due to type inference (as opposed to pythons dynamic typing).
   \section{Reduction to Practice}
 	  \subsection{Data Structure Design}
-    In the generation portion of this project I use
+    In the generation portion of this project I use several different data structures.
+    The first one is a python object of custom type node.
+    This basically serves as a tuple of values consisting of an X location, a Y location, list[Nodes], and a node_number.
+    All of these are used during the connecting of the nodes in graph generation excluding node_number.
+    Node number is assigned during object construction time and is only used when converting the list[Nodes] into an adjacency list.
+
+    The second mentioned data structure is the adjacency list.
+    Adjacency lists are an efficient graph representation that we will use in the subsequent reports.
+    Adjacency lists require only $O(v*e)$ storage as opposed to the $O(v^2)$ required for adjacency matrixes.
+    This is handy in situations where the expected average number of edges is significantly lower than the number of nodes in the graph.
+    Despite the huge potential savings on storage, the only sacrifice adjacency lists make is in the lookup operation to determine if there is an edge between two nodes.
+    This takes $O(e)$ in an adjacency list as opposed to $O(1)$ in an adjacency matrix.
 	  \subsection{Algorithm Description}
+    \subsubsection{Square Point Generation}
+    The algorithm to generate the points in the unit square topology is incredibly simple.
+    Simply pick two random numbers between 0 and 1 for all nodes.
+    \subsubsection{Disc Point Generation}
+    Generating the points on the Disc topology is slightly more challenging than generating the points for the square topology.
+    Instead of picking two numbers between 0 and 1, we apply the following formulae:
+      $\theta=rand()$
+      $x=sin(\theta)$
+      $y=cos(\theta)$
+    By using the same theta to determine the x and y coordinate we ensure that our points will never fall out of the unit disc.
+    I found a formula to generate points on a unit disk using \cite{40023}
+
     In order to ensure that average degree of the nodes is close to the desired average degree we define a radius surrounding each node.
     The formulas to find the radius for each topology is derived from the equations found in the paper Bipartite Grid Partitioning of a Random Geometric Graph\cite{chen2017bipartite}.
     The formula used to find this radius varies for each graph tolopogy and can be found in the table displayed below:
@@ -79,7 +102,7 @@
   	  \hline
   	  Unit Square & $d(G) \approx N\pi r^2 $ & $r = sqrt(\dfrac{d(G)}{N\pi})$ \\
   	  \hline
-  	  Unit Disc   & & \\
+  	  Unit Disc & & \\
   	  \hline
   	  Unit Sphere & & \\
   	  \hline
