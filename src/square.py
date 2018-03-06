@@ -47,17 +47,17 @@ if __name__ == "__main__":
     if args.edge_density:
         print("Creating Edge Density Chart")
         N = 8000
-        plot_edge_densities_square(N, A, output_dir="outputs/square/edge_density/")
+        plot_edge_densities_square(N, A, output_dir="../results/square/edge_density/")
 
     if args.runtimes:
         Ns = [1000, 4000, 8000, 16000, 32000]
-        plot_runtime_chart(Ns, A,  output_dir="outputs/square/runtime/")
+        plot_runtime_chart(Ns, A,  output_dir="../results/square/runtime/")
 
     if args.benchmarks:
         from graph_stats import gather_statistics
         from generate_graphs import unit_square_graph
         Ns = [1000, 5000, 25000, 50000, 100000]
-        gather_statistics(Ns, A, unit_square_graph, output_dir="outputs/square/benchmarks/")
+        gather_statistics(Ns, A, unit_square_graph, output_dir="../results/square/benchmarks/")
 
     if args.test:
         from generate_graphs import unit_square_graph

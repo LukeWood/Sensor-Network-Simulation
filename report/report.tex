@@ -20,10 +20,10 @@
 	Wireless Sensor Networks can be incredibly expensive to deploy and test which makes them an excellent candidate for simulated testing.
 	Vlady Ravelomananana and Hichem Kenniche from the University of Paris first explored the concept of using random geometric graphs (RGGs) to attempt to model wireless sensor networks \cite{kenniche2010random}.
 	RGGs can be used as a relatively cheap way to gather valuable information about how wireless sensor networks can function and communicate.
-	Through a series of reports	I will be:
+	Through a series of reports	I will be analyzing RGGs in the following ways as an attempt to gain some insight into the behavior of wireless sensor networks:
 	\begin{enumerate}
 		\item Generating RGGs on the geometries of a unit square, unit disc, and unit sphere
-		\item Color the generated graph in linear time using smallest vertex last ordering (TODO check)
+		\item Color the generated graph in linear time using smallest vertex last ordering
 		\item Find the terminal clique in the generated RGGs
 		\item Find a selection of bipartite subgraphs producted by an algorithm for coloring
 	\end{enumerate}
@@ -69,9 +69,9 @@
 	  \subsection{Data Structure Design}
     In the generation portion of this project I use several different data structures.
     The first one is a python object of custom type node.
-    This basically serves as a tuple of values consisting of an X location, a Y location, list[Nodes], and a node_number.
-    All of these are used during the connecting of the nodes in graph generation excluding node_number.
-    Node number is assigned during object construction time and is only used when converting the list[Nodes] into an adjacency list.
+    This basically serves as a tuple of values consisting of an X location, a Y location, a list of nodes, and a node number.
+    All of these are used during the connecting of the nodes in graph generation excluding node number.
+    Node number is assigned during object construction time and is only used when converting the list of nodes into an adjacency list.
 
     The second mentioned data structure is the adjacency list.
     Adjacency lists are an efficient graph representation that we will use in the subsequent reports.
@@ -86,12 +86,16 @@
     \subsubsection{Disc Point Generation}
     Generating the points on the Disc topology is slightly more challenging than generating the points for the square topology.
     Instead of picking two numbers between 0 and 1, we apply the following formulae:
-      $\theta=rand()$
-      $x=sin(\theta)$
-      $y=cos(\theta)$
+  	\begin{center}
+        $\theta=rand()$ \newline
+        $x=sin(\theta)$ \newline
+        $y=cos(\theta)$ \newline
+  	\end{center}
     By using the same theta to determine the x and y coordinate we ensure that our points will never fall out of the unit disc.
     I found a formula to generate points on a unit disk using \cite{40023}
 
+
+    \subsection{Node Connection}
     In order to ensure that average degree of the nodes is close to the desired average degree we define a radius surrounding each node.
     The formulas to find the radius for each topology is derived from the equations found in the paper Bipartite Grid Partitioning of a Random Geometric Graph\cite{chen2017bipartite}.
     The formula used to find this radius varies for each graph tolopogy and can be found in the table displayed below:
