@@ -1,7 +1,7 @@
 def draw_nodes(nodes, topology="", num_nodes=0, output_dir=""):
     import matplotlib.pyplot as plt
-    x = [node.x for node in nodes]
-    y = [node.y for node in nodes]
+    x = [node.dims[0] for node in nodes]
+    y = [node.dims[1] for node in nodes]
     plt.scatter(x, y)
 
     plt.xlim((0, 1))

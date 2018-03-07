@@ -33,10 +33,10 @@
 	\end{enumerate}
 	This report is the first of the series and will describe an implementation for a linear time algorithm to generate graphs consisting of N vertices with an average degree of A on the geometric topologies of: unit square, unit disc, unit sphere.
 	Some tables are included to display some metrics for generated  RGGs of various size to display the performance of the generation algorithm.
-	The square topology generation algorithm runs in approximately 15 seconds for graph size 100000 which is fast given the large input size.
-
+	The square topology generation algorithm runs in approximately 15 seconds for graph size 100000 which is fast given the large input size.  Reference Table\ref{square_benchmarks}.
 	\begin{center}
-	  \begin{table}[H]
+	  \begin{table}
+      \label{square_benchmarks}
       \csvautotabular{../results/square/benchmarks/data.csv}
 			\caption{Data on Graphs Generated with the Square Topology}
 		\end{table}
@@ -45,16 +45,18 @@
 	The disc topology also runs in linear time but the constant factor is much larger than that of the square topology.
 	This is due to some overhead that I incurred when generating the points themselves.
 	Despite the algorithm being slower than the square version, it still terminated in 48 seconds for 100000 nodes.
-	This is an acceptable runtime.
+  At the moment this is the worst generation algorithm and could be improved by using mathematical formulas instead of repeated guessing to generate points.
+  Reference Table \ref{disc_benchmarks}
 
   \begin{center}
-	  \begin{table}[H]
+	  \begin{table}
+      \label{disc_benchmarks}
       \csvautotabular{../results/disc/benchmarks/data.csv}
 			\caption{Data on Graphs Generated with the Disc Topology}
 		\end{table}
 	\end{center}
 
-  The sphere generation ran in .....
+  The sphere topology ran in
 
   \begin{center}
 	  \begin{table}[H]
@@ -257,7 +259,14 @@
     \includegraphics[width=1 \textwidth]{disc/edge_density/8000_64.png}
     \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Disc}
   \end{figure}
-  All of the edge density dsitributions follow a gaussian distribution which is what we expected.
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1 \textwidth]{sphere/edge_density/8000_64.png}
+    \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Sphere}
+  \end{figure}
+
+  All of the edge density distributions follow a gaussian distribution which is what we expected.
   This seems like a good outcome for this portion of the results.
   \subsection{Performance Rates}
   All of my algorithms ran in $O(n)$ time.
@@ -272,13 +281,25 @@
   \begin{figure}[H]
     \centering
     \includegraphics[width=1 \textwidth]{square/runtime/runtime_chart}
-    \caption{Runtimes of the $O(n)$ Algorithm}
+    \caption{Runtimes of the $O(n)$ Square RGG Generation Algorithm}
   \end{figure}
 
   \begin{figure}[H]
     \centering
     \includegraphics[width=1 \textwidth]{disc/runtime/runtime_chart}
-    \caption{Runtimes of the $O(n)$ Algorithm}
+    \caption{Runtimes of the $O(n)$ Disc RGG Generation Algorithm}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1 \textwidth]{sphere/runtime/runtime_chart}
+    \caption{Runtimes of the $O(n)$ Sphere RGG Generation Algorithm}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1 \textwidth]{shared/runtime/running_times}
+    \caption{Runtimes of the $O(n)$ }
   \end{figure}
 
 \printbibliography
