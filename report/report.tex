@@ -33,7 +33,8 @@
 	\end{enumerate}
 	This report is the first of the series and will describe an implementation for a linear time algorithm to generate graphs consisting of N vertices with an average degree of A on the geometric topologies of: unit square, unit disc, unit sphere.
 	Some tables are included to display some metrics for generated  RGGs of various size to display the performance of the generation algorithm.
-	The square topology generation algorithm runs in approximately 15 seconds for graph size 100000 which is fast given the large input size.  Reference Table\ref{square_benchmarks}.
+	The square topology generation algorithm runs in approximately 15 seconds for graph size 100000 which is fast given the large input size.
+  Reference table \ref{square_benchmarks} for in depth information on this algorithm.
 	\begin{center}
 	  \begin{table}
       \label{square_benchmarks}
@@ -46,7 +47,7 @@
 	This is due to some overhead that I incurred when generating the points themselves.
 	Despite the algorithm being slower than the square version, it still terminated in 48 seconds for 100000 nodes.
   At the moment this is the worst generation algorithm and could be improved by using mathematical formulas instead of repeated guessing to generate points.
-  Reference Table \ref{disc_benchmarks}
+  Reference table \ref{disc_benchmarks} for in depth information on this algorithm.
 
   \begin{center}
 	  \begin{table}
@@ -56,21 +57,26 @@
 		\end{table}
 	\end{center}
 
-  The sphere topology ran in
+  Sphere generation was also a linear time algorithm.
+  Unlike the disc topology I generated the points using a mathematical formula instead of brute force finding points.
+  Thie yielded a runtime of under 35 seconds for generating 32000 points.
+  Reference table \ref{sphere_benchmarks} for in depth information on this algorithm.
 
   \begin{center}
-	  \begin{table}[H]
+	  \begin{table}
+      \label{sphere_benchmarks}
       \csvautotabular{../results/sphere/benchmarks/data.csv}
 			\caption{Data on Graphs Generated with the Sphere Topology}
 		\end{table}
 	\end{center}
 
-	One interesting thing to notice in the above tables is that as the number of nodes grows the real average degree converges on the expected average degree.
+	One interesting thing to notice in the tables is that as the number of nodes grows the real average degree converges on the expected average degree.
 	The lower the number of nodes the further from the expected average degree the real number is.
 	This happens due to there not being enough nodes in the graph for the real radius to reach the expected value.
+  The random error in the point generation is more apparent when there are fewer nodes in the graph.
 
 	Going forwards I will continue to implement linear time algorithms to solve the problems at hand.
-	I will possible move from python to the Elixir programmign language to utilize the high level of parralelism that comes from immutable data.
+	I will possible move from python to the Elixir programming environment to utilize the high level of parralelism and the huge speed gain from type inference.
 
   Currently, my implementation has support for:
   \begin{enumerate}
@@ -80,25 +86,23 @@
 		\item Converting RGGs to an Adjacency List
 		\item Serializing Adjacency Lists to files
   \end{enumerate}
-  Being able to serialize the Adjacency Lists to files is a noteworthy feature as if there are algorithms that require faster runtimes than a dynamically typed language can support (such as python) we can still generate the RGGs from the generation implementation  and use them in other computation ecosystems.
 
   \subsection{Programming Environment Description}
 		The implementation of the algorithm used to gather the data supporting this report was gathered on a 15 inch Macbook pro 2017 with a 2.9 GHz Intel Core i7 processor and 16 GB of RAM.
 		The computer is running macOS High Sierra.
-		The graph generation is written in python 3 as generating and connection a graph is not super computationally expensive with even decently large inputs such as 100000.
-		The later algorithms may be implemented in a different language such as Elixir to get high levels of concurrency and higher efficiency due to type inference (as opposed to pythons dynamic typing).
+		The graph generation is written in python 3 as generating and connection a graph is not super computationally expensive with even decently large inputs such as 100000 (assuming $O(n) algorithms$).
+		The later algorithms may be implemented in a different language such as Elixir to get high levels of concurrency and higher efficiency due to type inference (as opposed to python's dynamic typing).
   \section{Reduction to Practice}
-		In this section I will discuss how the transition from theory to implementation went.
-		I will discuss optimizations I made as well as optimizations that I was aware that I could make but decided not to for reasons.
+    This section will describe the transition from theory to implementation.
+    This section will also give a detailed analysis of the algorithms used in this project as well as their asymptotic runtimes.
 	\subsection{Data Structure Design}
-		In the generation portion of this project I use several different data structures.
+		The generation portion of this project uses several different data structures.
 		The first one is a python object of custom type node.
-		This basically serves as a tuple of values consisting of an X location, a Y location, a list of nodes, and a node number.
-		All of these are used during the connecting of the nodes in graph generation excluding node number.
-		Node number is assigned during object construction time and is only used when converting the list of nodes into an adjacency list.
-		This data structure could be used interchangeably with a statically indexed tuple instead of an object to avoid any overhead associated with objects in python, however I believe that the readability gained from using a custom node class heavily outweighs the marginal performance benefit gained from using a statically indexed tuple.
+		This serves as a tuple of values consisting of a list of dimensions, a list of nodes, and a node number.
+		The first two are used during graph generation and the latter during conversion to an adjacency list.
+		This data structure could be used interchangeably with a statically indexed tuple instead of an object to avoid any overhead associated with objects in python, however the readability gained from using a custom node class heavily outweighs the marginal performance benefit gained from using a statically indexed tuple.
 		Both of these data structures provide $O(1)$ read and write operations.
-		If we were to generate gigantic graphs then an argument could be made to switch over the statically indexed tuples to reduce the access time for attributes by a bit.
+		If the goal were to generate gigantic graphs then an argument could be made to switch over the statically indexed tuples to reduce the access time for attributes by a bit as tuples use static memory address offsets.
 
 		The second mentioned data structure is the adjacency list.
 		Adjacency lists are an efficient graph representation that we will use in the subsequent reports.
@@ -108,10 +112,11 @@
 		This takes $O(e)$ in an adjacency list as opposed to $O(1)$ in an adjacency matrix.
 
 	\subsection{Algorithm Description}
-		In the following sections I will give a detailed analysis of the algorithms used in this project.
-		I will discuss the runtimes of each algorithm in terms of it's $O$ and $\Omega$ performance.
+		This section gives a detailed analysis of the algorithms used in the graph generation implementation.
+    Table \ref{asymptotic_runtime_table} contains information on the asymptotic runtimes of the algorithms in terms of $O$ and $\Omega$.
     	\begin{center}
     		\begin{table}
+          \label{asymptotic_runtime_table}
     			\begin{tabular}{ |c|c|c| }
     				\hline
     				Algorithm & $\Omega$ & $O$ \\
@@ -125,27 +130,57 @@
     				Node Connection & $\Omega(n)$ & $O(n)$ \\
     				\hline
     			\end{tabular}
-          \caption{big O of all of the algorithms described}
+          \caption{big $O$ and big $\Omega$ of all of the algorithms described}
     		\end{table}
     	\end{center}
 
-  \subsection{Square Point Generation}
-		The algorithm to generate the points in the unit square topology is incredibly simple.
-		Simply pick two random numbers between 0 and 1 for all nodes.
+  \paragraph{Square Point Generation}
+		The algorithm to generate the points in the unit square topology is simple.
+		The steps are as follows:
+    \begin{enumerate}
+      \item x=random(0, 1), y=random(0, 1)
+      \item add (x,y) to a list of points
+      \item repeat steps 1 and 2 until N points are created
+    \end{enumerate}
+    That is all that is necesary to get a random point in the unit square.
+    This algorithm is $\Theta(n)$.
 
-  \subsection{Disc Point Generation}
-		Generating the points on the Disc topology is slightly more challenging than generating the points for the square topology.
-    The algorithm for generating points in the unit disc is as follows:
-    Pick a random x and y between 0 and 1.
-    Calculate the distance between that point and the center of the unit circle (0.5, 0.5).
-    If the distance is less than or equal to .5 we take this point, otherwise we generate another point.
+  \paragraph{Disc Point Generation}
+		Generating the points on the disc topology is slightly more challenging than generating the points for the square topology.
+    The algorithm for generating points used in the implementation descriped in this point is as follows:
+    \begin{enumerate}
+      \item x=random(0, 1), y=random(0,1)
+      \item if the distance from (x,y) to (.5, .5) is < .5, add (x,y) to a list of points
+      \item repeat steps 1 and 2 until N points are created
+    \end{enumerate}
+    The issue with this algorithm is the nondeterminism involved in creating each point.
+    When generating large numbers of points lots of work is wasted on generating the unused random points.
+    In future iterations of this project a mathematical approach may be used to generated these points.
+    Despite the non-determinism, this algorithm is still amortized $\Theta(n)$.
+
+    A possible approach to fixing this implementation would be to pick a radius between 0 and 1, and then rotate by a random number of radians between 0 and 2$\pi$.
+    This was not implemented as I was unsure if this would produce a uniform distribution.
+
+  \paragraph{Sphere Point Generation}
+    Generating points on the surface of the unit sphere can be solved using math.
+    The steps for the following algorithm are as follows:
+    \begin{emumerate}
+      \item u = (random() * 2) - 1, theta = random() * 2 * pi
+      \item x = sqrt(1 - u**2) * cos(theta), y = sqrt(1 - u**2) * sin(theta), z = u
+      \item append (x, y, z) to a list of points.
+      \item repeat steps 1-3 N times
+    \end{enumerate}
+    In the implementation associated with this report the values x, y, and z are transformed to form a sphere around (.5, .5, .5) as opposed to (0, 0, 0) as it makes the connection algorithm simpler.
+    This algorithm is $\Theta(n)$.
 
 	\subsection{Node Connection}
-		In order to ensure that average degree of the nodes is close to the desired average degree we define a radius surrounding each node.
+		In order to ensure that average degree of the nodes is close to the desired average degree, a radius of a specific length can be defined surrounding each node.
+    The nodes within that radius of each other are then connected in the graph.
 		The formulas to find the radius for each topology is derived from the equations found in the paper Bipartite Grid Partitioning of a Random Geometric Graph\cite{chen2017bipartite}.
-		The formula used to find this radius varies for each graph tolopogy and can be found in the table displayed below:
+		The formula used to find this radius varies for each graph tolopogy and can be found in the table \ref{radius_equations}.
 
 		\begin{tabular}{ |c|c|c| }
+        \label{radius_equations}
 				\hline
 				Topology & Equation Used to Derive Radius & Radius Equation \\
 				\hline
@@ -153,11 +188,32 @@
 				\hline
 				Unit Disc & $r = sqrt(\dfrac{d(G)}{N\pi})$ & $r = sqrt(\dfrac{d(G)}{N})/2$ \\
 				\hline
-				Unit Sphere & $r = sqrt(\dfrac{d(G)}{N})/2$ & $r = sqrt(\dfrac{d(G)}{N})/4$ \\
+				Unit Sphere & $r = sqrt(\dfrac{d(G)}{N})/2$ & $r = sqrt(\dfrac{d(G)}{N})*2/3$ \\
 				\hline
 		\end{tabular}
-    I did not personally derive the unit sphere radius formula.
-    I instead looked at the implementation of Ian Johnson\cite{ianjjohnson}.
+
+    The brute force algorithm for generating and connecting RGGs in this way is $O(n^2)$.
+    This quickly became problematic as the algorithm took upwards of 200 seconds to run on input size of only 12,000.
+    Figure \ref{brute_force_runtimes} shows this issue.
+    \begin{figure}
+      \label{brute_force_runtimes}
+      \includegraphics[width=1 \textwidth]{square/runtime/runtime_chart_naive}
+      \caption{Runtimes of the $O(n^2)$ Algorithm}
+    \end{figure}
+    Instead, the implementation uses a bucket method to narrow down the required number of comparisons.
+    The idea for this algorithm comes from the paprer Bipartite Grid Partitioning of a Random Geometric Graph\cite{chen2017bipartite}.
+    The algorithm can be broken down into steps as follows:
+    \begin{enumerate}
+      \item 
+    \end{enumerate}
+
+
+    The runtimes for this algorithm can be found in figure \ref{optimised_runtimes_for_connection}.
+    \begin{figure}
+      \label{optimised_runtimes_for_connection}
+  		\includegraphics[width=1 \textwidth]{square/runtime/runtime_chart}
+  		\caption{Runtimes of the $O(n)$ Algorithm}
+	  \end{figure}
 	\subsection{Conversion From Node List to Adjacency Matrix}
 		The algorithm to convert from a list of the node class I defined to an adjacency list is extremely straight forward.
 		The algorithm consists of a pair of nested map operations.
@@ -168,22 +224,11 @@
 
 
   \subsection{Algorithm Engineering}
-	  Originally I had a brute force algorithm that ran in $O(n^2)$ time.
-	  This quickly became problematic as the algorithm took upwards of 200 seconds to run on input size of only 12,000.
-	  \begin{figure}[H]
-		\centering
-		\includegraphics[width=1 \textwidth]{square/runtime/runtime_chart_naive}
-		\caption{Runtimes of the $O(n^2)$ Algorithm}
-	  \end{figure}
 
 
 	  To fix this, I overhauled the algorithm to be $O(n)$.
 	  I did this by implementing the cell method described above in the Algorithm Description section as well as in Chen's paper Bipartite Grid Partitioning of a Random Geometric Graph\cite{chen2017bipartite}.
-	  \begin{figure}[H]
-  		\centering
-  		\includegraphics[width=1 \textwidth]{square/runtime/runtime_chart}
-  		\caption{Runtimes of the $O(n)$ Algorithm}
-	  \end{figure}
+
 
 	  I have also included a table to compare some of the runtimes for the same size inputs below.
 
@@ -226,19 +271,19 @@
     The following two figures
 
     \begin{figure}[H]
-      \centering
+
       \includegraphics[width=1 \textwidth]{square/drawing/nodes.png}
       \caption{1000 Points on the Square Topology}
     \end{figure}
     The points are uniform randomly distributed over the square topology as we can see in the above figure.
     \begin{figure}[H]
-      \centering
+
       \includegraphics[width=1 \textwidth]{disc/drawing/nodes.png}
       \caption{1000 Points on the Disc Topology}
     \end{figure}
     The points are uniform randomly distributed over the unit circle in the disc topology.
     \begin{figure}[H]
-      \centering
+
       \includegraphics[width=1 \textwidth]{sphere/drawing/sphere_drawing.png}
       \caption{1000 Points on the Sphere Topology}
     \end{figure}
@@ -249,19 +294,19 @@
   As expected I got a gaussian distribution for my edge densities.
   This is apparent in the attached edge distribution charts for each topology
   \begin{figure}[H]
-    \centering
+
     \includegraphics[width=1 \textwidth]{square/edge_density/8000_64.png}
     \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Square}
   \end{figure}
 
   \begin{figure}[H]
-    \centering
+
     \includegraphics[width=1 \textwidth]{disc/edge_density/8000_64.png}
     \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Disc}
   \end{figure}
 
   \begin{figure}[H]
-    \centering
+
     \includegraphics[width=1 \textwidth]{sphere/edge_density/8000_64.png}
     \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Sphere}
   \end{figure}
@@ -279,25 +324,25 @@
   \end{center}
 
   \begin{figure}[H]
-    \centering
+
     \includegraphics[width=1 \textwidth]{square/runtime/runtime_chart}
     \caption{Runtimes of the $O(n)$ Square RGG Generation Algorithm}
   \end{figure}
 
   \begin{figure}[H]
-    \centering
+
     \includegraphics[width=1 \textwidth]{disc/runtime/runtime_chart}
     \caption{Runtimes of the $O(n)$ Disc RGG Generation Algorithm}
   \end{figure}
 
   \begin{figure}[H]
-    \centering
+
     \includegraphics[width=1 \textwidth]{sphere/runtime/runtime_chart}
     \caption{Runtimes of the $O(n)$ Sphere RGG Generation Algorithm}
   \end{figure}
 
   \begin{figure}[H]
-    \centering
+
     \includegraphics[width=1 \textwidth]{shared/runtime/running_times}
     \caption{Runtimes of the $O(n)$ }
   \end{figure}
