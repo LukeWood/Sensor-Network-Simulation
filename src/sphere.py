@@ -59,13 +59,14 @@ if __name__ == "__main__":
         from graph_stats import gather_statistics
         from generate_graphs import unit_sphere_graph
         Ns = [1000, 5000, 25000, 50000, 100000]
+        Ns = [1000, 4000, 8000, 16000, 32000]
         gather_statistics(Ns, A, unit_sphere_graph, output_dir="../results/sphere/benchmarks/")
 
     if args.test:
         from generate_graphs import unit_sphere_graph
         from generate_graphs import calculate_radius_sphere
 
-        N = 20000
+        N = 2000
         nodes = unit_sphere_graph(N, A)
 
         from graph_stats import total_edges, average_degree, max_degree, min_degree

@@ -1,6 +1,10 @@
 def distance(n1, n2):
 	from math import sqrt
-	return sqrt(sum([(n1.dims[i] - n2.dims[i])**2 for i in range(len(n1.dims))]))
+	return sqrt(
+		sum(
+			[(n1.dims[i] - n2.dims[i])**2 for i in range(len(n1.dims))]
+		)
+	)
 
 def extract_node_nums(node):
 	return list(
