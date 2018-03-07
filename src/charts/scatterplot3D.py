@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def scatterplot3D(nodes):
+def scatterplot3D(nodes, output_dir=""):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
@@ -16,4 +16,5 @@ def scatterplot3D(nodes):
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
 
-    plt.show()
+    name = "%ssphere_drawing.png" % output_dir
+    plt.savefig(name, bbox_inches="tight")

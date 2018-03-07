@@ -4,4 +4,4 @@ N = 1000
 A = 64
 nodes = unit_sphere_graph(N, A)
 
-scatterplot3D(nodes)
+scatterplot3D(nodes, output_dir="../results/sphere/drawing/")
