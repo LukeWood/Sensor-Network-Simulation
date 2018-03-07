@@ -268,55 +268,57 @@
 		If we have a linear algorithm we should be able to fit the distribution of points to a linear equation with minimal error.
 		Both of these verification methods were successful and can be seen in the results section of this report.
 
-  \subsubsection{Visualizing the Points}
-    A simple way to validate that the points are distributing correctly is by plotting out the points in a scatter plot.
-    Early on I had a bug where I was accidentally distributing the points around the radius of the unit disc instead of evenly inside the unit disc.
-    I found this by scatter plotting the points and seeing that they were clearly around the circumference of the circle.
-    The following two figures
+  \paragraph{Visualizing the Points}
+    One way to validate that the points are distributing correctly is by plotting out the points in a scatter plot.
+    Early on the implementation had a bug where the points distributed around the radius of the unit disc instead of evenly inside the unit disc.
+    Using a scatter plot made this trivial to spot.
 
-    \begin{figure}[H]
-
+    Figure \ref{drawing_of_square} shows the distribution on the square topology,
+    Figure \ref{drawing_of_disc} shows the distribution on the disc topology,
+    and Figure \ref{drawing_of_sphere} shows the distribution on the sphere topology.
+    \begin{figure}
+      \label{drawing_of_square}
       \includegraphics[width=1 \textwidth]{square/drawing/nodes.png}
       \caption{1000 Points on the Square Topology}
     \end{figure}
-    The points are uniform randomly distributed over the square topology as we can see in the above figure.
-    \begin{figure}[H]
 
+    \begin{figure}[H]
+      \label{drawing_of_disc}
       \includegraphics[width=1 \textwidth]{disc/drawing/nodes.png}
       \caption{1000 Points on the Disc Topology}
     \end{figure}
-    The points are uniform randomly distributed over the unit circle in the disc topology.
     \begin{figure}[H]
-
+      \label{drawing_of_sphere}
       \includegraphics[width=1 \textwidth]{sphere/drawing/sphere_drawing.png}
       \caption{1000 Points on the Sphere Topology}
     \end{figure}
-    The same is true for that of the unit sphere.
+
+    \paragraph{Edge Density}
+    Checking the distribution of the edge densities is one way to verify that the edges are connecting as expected
+    The edge distributions should follow a gaussian distribution.
+    Figures \ref{square_edge_density}, \ref{disc_edge_density}, and \ref{sphere_edge_density} all show gaussian distrubutions for their respective topologies.
+    All of the edge density distributions follow a gaussian distribution which is what is expected meaning that the edges likely connected the nodes in the expected way.
+
+    \begin{figure}[H]
+      \label{square_edge_density}
+      \includegraphics[width=1 \textwidth]{square/edge_density/8000_64.png}
+      \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Square}
+    \end{figure}
+
+    \begin{figure}[H]
+      \label{disc_edge_density}
+      \includegraphics[width=1 \textwidth]{disc/edge_density/8000_64.png}
+      \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Disc}
+    \end{figure}
+
+    \begin{figure}[H]
+      \label{sphere_edge_density}
+      \includegraphics[width=1 \textwidth]{sphere/edge_density/8000_64.png}
+      \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Sphere}
+    \end{figure}
 
 \section{Result Summary}
-  \subsection{Edge Density}
-  As expected I got a gaussian distribution for my edge densities.
-  This is apparent in the attached edge distribution charts for each topology
-  \begin{figure}[H]
 
-    \includegraphics[width=1 \textwidth]{square/edge_density/8000_64.png}
-    \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Square}
-  \end{figure}
-
-  \begin{figure}[H]
-
-    \includegraphics[width=1 \textwidth]{disc/edge_density/8000_64.png}
-    \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Disc}
-  \end{figure}
-
-  \begin{figure}[H]
-
-    \includegraphics[width=1 \textwidth]{sphere/edge_density/8000_64.png}
-    \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Sphere}
-  \end{figure}
-
-  All of the edge density distributions follow a gaussian distribution which is what we expected.
-  This seems like a good outcome for this portion of the results.
   \subsection{Performance Rates}
   All of my algorithms ran in $O(n)$ time.
   There was variance between the runtime of the different topologies due to the way the points were generated.
