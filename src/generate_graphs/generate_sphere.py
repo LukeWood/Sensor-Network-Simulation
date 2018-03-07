@@ -30,7 +30,7 @@ def connect_nodes(nodes, R):
 
     for node in nodes:
         buckets[int(node.dims[0]*num_buckets)][int(node.dims[1]*num_buckets)].append(node)
-
+    return nodes
 
 
 def unit_sphere_graph(N, A):
