@@ -33,7 +33,7 @@
 	\end{enumerate}
 	This report is the first of the series and will describe an implementation for a linear time algorithm to generate graphs consisting of N vertices with an average degree of A on the geometric topologies of: unit square, unit disc, unit sphere.
 	Some tables are included to display some metrics for generated  RGGs of various size to display the performance of the generation algorithm.
-	The square topology generation algorithm runs in approximately 15 seconds for graph size 100000 which is reasonable given the large input size.
+	The square topology generation algorithm runs in approximately 15 seconds for graph size 100000 which is fast given the large input size.
 
 	\begin{center}
 	  \begin{table}[H]
@@ -44,7 +44,6 @@
 
 	The disc topology also runs in linear time but the constant factor is much larger than that of the square topology.
 	This is due to some overhead that I incurred when generating the points themselves.
-	This is a possible optimization point for future iterations.
 	Despite the algorithm being slower than the square version, it still terminated in 48 seconds for 100000 nodes.
 	This is an acceptable runtime.
 
@@ -52,6 +51,15 @@
 	  \begin{table}[H]
       \csvautotabular{../results/disc/benchmarks/data.csv}
 			\caption{Data on Graphs Generated with the Disc Topology}
+		\end{table}
+	\end{center}
+
+  The sphere generation ran in .....
+
+  \begin{center}
+	  \begin{table}[H]
+      \csvautotabular{../results/sphere/benchmarks/data.csv}
+			\caption{Data on Graphs Generated with the Sphere Topology}
 		\end{table}
 	\end{center}
 
@@ -66,6 +74,7 @@
   \begin{enumerate}
 		\item Generating a RGG with a unit square topology
 		\item Generating a RGG with a unit disc topology
+    \item Generating a RGG with a unit sphere topology
 		\item Converting RGGs to an Adjacency List
 		\item Serializing Adjacency Lists to files
   \end{enumerate}
@@ -99,26 +108,29 @@
 	\subsection{Algorithm Description}
 		In the following sections I will give a detailed analysis of the algorithms used in this project.
 		I will discuss the runtimes of each algorithm in terms of $\Omega$, $O$, and $\Theta$ when relevant.
+
+    	\begin{center}
+    		\begin{table}
+    			\begin{tabular}{ |c|c| }
+    				\hline
+    				Algorithm & $O$ \\
+    				\hline
+    				Square Point Generation & $O(n)$ \\
+    				\hline
+    				Disc Point Generation & $O(n)$ \\
+    				\hline
+            Sphere Point Generation & $O(n)$ \\
+            \hline
+    				Node Connection & $O(n)$ \\
+    				\hline
+    			\end{tabular}
+          \caption{big O of all of the algorithms described}
+    		\end{table}
+    	\end{center}
+
   \subsection{Square Point Generation}
 		The algorithm to generate the points in the unit square topology is incredibly simple.
 		Simply pick two random numbers between 0 and 1 for all nodes.
-
-	\begin{center}
-		\begin{table}
-			\begin{tabular}{ |c|c| }
-
-				\hline
-				Algorithm & $O$ \\
-				\hline
-				Square Point Generation & $O(n)$ \\
-				\hline
-				Disc Point Generation & $O(n)$ \\
-				\hline
-				Node Connection & $O(n)$ \\
-				\hline
-			\end{tabular}
-		\end{table}
-	\end{center}
 
   \subsection{Disc Point Generation}
 		Generating the points on the Disc topology is slightly more challenging than generating the points for the square topology.
@@ -269,7 +281,6 @@
     \includegraphics[width=1 \textwidth]{disc/runtime/runtime_chart}
     \caption{Runtimes of the $O(n)$ Algorithm}
   \end{figure}
-
 
 \printbibliography
 
