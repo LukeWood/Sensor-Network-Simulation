@@ -6,7 +6,7 @@ A=64
 Ns=[1000, 5000, 10000, 25000, 50000, 100000]
 
 with open("../results/shared/generation_speeds.csv", "w+") as f:
-    f.write("N,A,Square Time,Disc Time\n")
+    f.write("N,A,Square Runtime,Disc Runtime\n")
     for N in Ns:
         start = process_time()
         unit_disc_graph(N, A)

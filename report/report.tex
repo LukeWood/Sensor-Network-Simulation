@@ -17,10 +17,10 @@
   \maketitle
 
   \section{Executive Summary}
-	Wireless Sensor Networks are a huge area in modern networks research.
+	Wireless Sensor Networks (WSNs) are a group of ad hoc wireless devices that communicate amongst themselves.
 	They are incredibly expensive to develop and test which makes them a great candidate for simulation as a preliminary way to gather data.
 	Vlady Ravelomananana and Hichem Kenniche from the University of Paris first explored the concept of using random geometric graphs (RGGs) to attempt to model wireless sensor networks \cite{kenniche2010random}.
-	In the aforementioned paper it is proven that randomly generated points is the best way to model the incoming wireless sensor networks.
+  At the moment random geographic graphs are the state of the art method for simulating WSNs.
 	In this project I will use RGGs as a way to gather valuable information about how wireless sensor networks will possibly function and communicate.
 
   \subsection{Introduction and Summary}
@@ -105,17 +105,17 @@
 
 	\begin{center}
 		\begin{table}
-			\begin{tabular}{ |c|c|c|c| }
-				\hline
-				Algorithm & $\Omega$ & $O$ & $\Theta$ \\
-				\hline
-				Square Point Generation & $\Omega(n)$ & $O(n)$ & $\Theta(n)$ \\
-				\hline
-				Disc Point Generation & $\Omega(n)$ & $O(n)$ & $\Theta(n)$ \\
-				\hline
-				Node Connection & & & \\
-				\hline
+			\begin{tabular}{ |c|c| }
 
+				\hline
+				Algorithm & $O$ \\
+				\hline
+				Square Point Generation & $O(n)$ \\
+				\hline
+				Disc Point Generation & $O(n)$ \\
+				\hline
+				Node Connection & $O(n)$ \\
+				\hline
 			\end{tabular}
 		\end{table}
 	\end{center}
@@ -138,14 +138,13 @@
 				\hline
 				Unit Square & $d(G) \approx N\pi r^2 $ & $r = sqrt(\dfrac{d(G)}{N\pi})$ \\
 				\hline
-				Unit Disc & $r = sqrt(\dfrac{d(G)}{N\pi})$ & $r = sqrt(\dfrac{d(G)}{N})$ \\
+				Unit Disc & $r = sqrt(\dfrac{d(G)}{N\pi})$ & $r = sqrt(\dfrac{d(G)}{N})/2$ \\
 				\hline
-				Unit Sphere & & \\
+				Unit Sphere & $r = sqrt(\dfrac{d(G)}{N})/2$ & $r = sqrt(\dfrac{d(G)}{N})/4$ \\
 				\hline
 		\end{tabular}
-
-		To derive the disc radius formula, I simply multiplied the unit square formula by pi because that is the amount of extra area that the unit disc has over the unit square
-
+    I did not personally derive the unit sphere radius formula.
+    I instead looked at the implementation of Ian Johnson\cite{ianjjohnson}.
 	\subsection{Conversion From Node List to Adjacency Matrix}
 		The algorithm to convert from a list of the node class I defined to an adjacency list is extremely straight forward.
 		The algorithm consists of a pair of nested map operations.
@@ -168,9 +167,9 @@
 	  To fix this, I overhauled the algorithm to be $O(n)$.
 	  I did this by implementing the cell method described above in the Algorithm Description section as well as in Chen's paper Bipartite Grid Partitioning of a Random Geometric Graph\cite{chen2017bipartite}.
 	  \begin{figure}[H]
-		\centering
-		\includegraphics[width=1 \textwidth]{square/runtime/runtime_chart}
-		\caption{Runtimes of the $O(n)$ Algorithm}
+  		\centering
+  		\includegraphics[width=1 \textwidth]{square/runtime/runtime_chart}
+  		\caption{Runtimes of the $O(n)$ Algorithm}
 	  \end{figure}
 
 	  I have also included a table to compare some of the runtimes for the same size inputs below.
@@ -207,29 +206,64 @@
 		If we have a linear algorithm we should be able to fit the distribution of points to a linear equation with minimal error.
 		Both of these verification methods were successful and can be seen in the results section of this report.
 
+  \subsubsection{Visualizing the Points}
+    A simple way to validate that the points are distributing correctly is by plotting out the points in a scatter plot.
+    Early on I had a bug where I was accidentally distributing the points around the radius of the unit disc instead of evenly inside the unit disc.
+    I found this by scatter plotting the points and seeing that they were clearly around the circumference of the circle.
+    The following two figures
+
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=1 \textwidth]{square/drawing/nodes.png}
+      \caption{1000 Points on the Square Topology}
+    \end{figure}
+    The points are uniform randomly distributed over the square topology as we can see in the above figure.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=1 \textwidth]{disc/drawing/nodes.png}
+      \caption{1000 Points on the Disc Topology}
+    \end{figure}
+    The points are uniform randomly distributed over the unit circle in the disc topology.
+
 \section{Result Summary}
   \subsection{Edge Density}
   As expected I got a gaussian distribution for my edge densities.
   This is apparent in the attached edge distribution charts for each topology
   \begin{figure}[H]
-  \centering
-  \includegraphics[width=1 \textwidth]{square/edge_density/8000_64.png}
-  \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Square}
+    \centering
+    \includegraphics[width=1 \textwidth]{square/edge_density/8000_64.png}
+    \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Square}
   \end{figure}
 
   \begin{figure}[H]
-  \centering
-  \includegraphics[width=1 \textwidth]{disc/edge_density/8000_64.png}
-  \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Disc}
+    \centering
+    \includegraphics[width=1 \textwidth]{disc/edge_density/8000_64.png}
+    \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Disc}
   \end{figure}
-
+  All of the edge density dsitributions follow a gaussian distribution which is what we expected.
+  This seems like a good outcome for this portion of the results.
   \subsection{Performance Rates}
+  All of my algorithms ran in $O(n)$ time.
+  There was variance between the runtime of the different topologies due to the way the points were generated.
   \begin{center}
 	  \begin{table}[H]
 		  \csvautotabular{../results/shared/generation_speeds.csv}
-		  \caption{Runtimes of the $O(n)$ Graph Generations in Seconds}
+		  \caption{Comparison of Runtimes of Generating the Different Topologies}
 	  \end{table}
   \end{center}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1 \textwidth]{square/runtime/runtime_chart}
+    \caption{Runtimes of the $O(n)$ Algorithm}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1 \textwidth]{disc/runtime/runtime_chart}
+    \caption{Runtimes of the $O(n)$ Algorithm}
+  \end{figure}
+
 
 \printbibliography
 

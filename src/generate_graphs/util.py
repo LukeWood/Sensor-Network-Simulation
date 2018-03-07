@@ -1,8 +1,6 @@
-def distance2D(n1, n2):
+def distance(n1, n2):
 	from math import sqrt
-	dx = (n1.x - n2.x)
-	dy = (n1.y - n2.y)
-	return sqrt((dx*dx) + (dy*dy))
+	return sqrt(sum([(n1.dims[i] - n2.dims[i])**2 for i in range(len(n1.dims))]))
 
 def extract_node_nums(node):
 	return list(
@@ -14,7 +12,7 @@ def adjacency_list_from_node_list(nodes):
 	return list(
 		map(extract_node_nums, nodes)
 	)
-                
+
 def adjacency_list_to_file(alist, filename=None):
 	from json import dumps
 	if not filename:

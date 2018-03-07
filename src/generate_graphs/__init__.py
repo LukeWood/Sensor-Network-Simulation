@@ -1,3 +1,3 @@
 from .generate_square import unit_square_graph, calculate_radius_square
-from .generate_square import brute_force_unit_square_graph
 from .generate_disc import unit_disc_graph, calculate_radius_disc
+from .generate_sphere import unit_sphere_graph, calculate_radius_sphere
