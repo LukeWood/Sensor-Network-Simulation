@@ -318,39 +318,43 @@
     \end{figure}
 
 \section{Result Summary}
-
   \subsection{Performance Rates}
   All of my algorithms ran in $O(n)$ time.
-  There was variance between the runtime of the different topologies due to the way the points were generated.
+  There was variance between the runtime of the different topologies due to the way the points were generated combined with the calculation required to compute 2d distance vs 3d distance.
+  Table \ref{runtime_comparison_by_topology} shows the runtime of all of the topologies in a table.
+  Figures \ref{square_rgg_runtime_chart}, \ref{disc_rgg_runtime_chart}, and \ref{sphere_rgg_runtime_chart} show the individual runtime charts.
+  Figure \ref{all_rgg_runtimes_chart} shows all of the runtimes of the different RGG generation algorithms overlaying each other.
+
   \begin{center}
-	  \begin{table}[H]
+	  \begin{table}
+      \label{runtime_comparison_by_topology}
 		  \csvautotabular{../results/shared/generation_speeds.csv}
 		  \caption{Comparison of Runtimes of Generating the Different Topologies}
 	  \end{table}
   \end{center}
 
-  \begin{figure}[H]
-
+  \begin{figure}
+    \label{square_rgg_runtime_chart}
     \includegraphics[width=1 \textwidth]{square/runtime/runtime_chart}
     \caption{Runtimes of the $O(n)$ Square RGG Generation Algorithm}
   \end{figure}
 
-  \begin{figure}[H]
-
+  \begin{figure}
+    \label{disc_rgg_runtime_chart}
     \includegraphics[width=1 \textwidth]{disc/runtime/runtime_chart}
     \caption{Runtimes of the $O(n)$ Disc RGG Generation Algorithm}
   \end{figure}
 
-  \begin{figure}[H]
-
+  \begin{figure}
+    \label{sphere_rgg_runtime_chart}
     \includegraphics[width=1 \textwidth]{sphere/runtime/runtime_chart}
     \caption{Runtimes of the $O(n)$ Sphere RGG Generation Algorithm}
   \end{figure}
 
   \begin{figure}[H]
-
+    \label{all_rgg_runtimes_chart}
     \includegraphics[width=1 \textwidth]{shared/runtime/running_times}
-    \caption{Runtimes of the $O(n)$ }
+    \caption{Runtimes of the $O(n)$ RGG Generation Algorithms overlayed}
   \end{figure}
 
 \printbibliography
