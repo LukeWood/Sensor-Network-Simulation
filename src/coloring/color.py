@@ -1,39 +1,42 @@
-def smallest_last_vertex_ordering(adj_list):
-    lengths_to_nodes = []
-    nodes_to_lengths = {}
-    for node_num,row in enumerate(adj_list):
-        length = len(row)
-        while length >= len(lengths_to_nodes):
-            lengths_to_nodes.append(set())
-        lengths_to_nodes[length].add(node_num)
-        nodes_to_lengths[node_num] = length
-    return lengths_to_nodes, nodes_to_lengths
+def color_graph(ordering, adj_list):
+    coloring = [-1 for _ in ordering]
+    for node in ordering:
+        color = 0
+        used_colors = set([coloring[neighbor] for neighbor in adj_list[node]])
+        while color in used_colors:
+            color = color + 1
+        coloring[node] = color
+    return coloring
 
-def color_graph(adj_list):
-    lengths_to_nodes, nodes_to_lengths = smallest_last_vertex_ordering(adj_list)
-    max_degree = len(lengths_to_nodes)
-    colors = [-1 for _ in adj_list]
-    count = 0
-    while count < len(adj_list):
+def compute_ordering(adj_list, lengths_when_removed_returned=False):
+    ordering = []
+    max_degree = max(map(lambda x: len(x), adj_list))
+    length_to_nodes = {}
+    for i in range(max_degree+1):
+        length_to_nodes[i] = set()
+    length_to_nodes[-1] = set()
+    node_to_length = [len(node) for node in adj_list]
+    lengths_when_removed = [-1 for _ in adj_list]
+
+    for i, node in enumerate(adj_list):
+        l = len(node)
+        length_to_nodes[l].add(i)
+
+    while len(ordering) != len(adj_list):
         index = 0
-        while index < len(lengths_to_nodes) and len(lengths_to_nodes[index]) == 0:
-            index = index + 1
-        if index == len(lengths_to_nodes):
-            break
-        for node in lengths_to_nodes[index]: break
-        neighbors = adj_list[node]
-        used_colors = set([colors[neighbor] for neighbor in neighbors])
-        current_color = 0
-        while current_color in used_colors:
-            current_color+=1
-        colors[node] = current_color
-        for neighbor in neighbors:
-            length = nodes_to_lengths[neighbor]
-            nlength = length-1
-            nodes_to_lengths[neighbor] = nlength
-            if neighbor in lengths_to_nodes[length]:
-                lengths_to_nodes[length].remove(neighbor)
-                lengths_to_nodes[nlength].add(neighbor)
-        lengths_to_nodes[index].remove(node)
-        count + 1
-    return max(colors)
+        while len(length_to_nodes[index]) == 0:
+            index=index + 1
+        for node in length_to_nodes[index]: break
+        ordering.append(node)
+        lengths_when_removed[node] = node_to_length[node]
+        for neighbor in adj_list[node]:
+            l = node_to_length[neighbor]
+            if neighbor in length_to_nodes[l]:
+                node_to_length[l] = node_to_length[neighbor]-1
+                length_to_nodes[l].remove(neighbor)
+                length_to_nodes[l-1].add(neighbor)
+        length_to_nodes[index].remove(node)
+    if lengths_when_removed_returned:
+        return ordering, lengths_when_removed
+    else:
+        return ordering
