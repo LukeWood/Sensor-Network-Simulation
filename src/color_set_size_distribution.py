@@ -18,14 +18,14 @@ def coloring_histogram(coloring, graph_topology=""):
     plt.title("")
     plt.xlabel("Degree")
     plt.ylabel("Frequency")
-
+    plt.title("Frequencies of Colors for Topology %s, N=16000, A=64" % graph_topology)
     name="../results/%s/coloring/color_distribution.png" % graph_topology
     ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%d'))
     ax.xaxis.set_major_locator(ticker.MultipleLocator(base=5))
     plt.savefig(name, bbox_inches="tight")
 
 N = 16000
-A = 32
+A = 64
 
 fns = [
     ("square",unit_square_graph),
