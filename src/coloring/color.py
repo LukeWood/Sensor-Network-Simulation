@@ -8,6 +8,12 @@ def color_graph(ordering, adj_list):
         coloring[node] = color
     return coloring
 
+def first_of_set(s):
+    if len(s) == 0:
+        raise ValueError("Empty set given to function 'first_of_set/1'")
+    for item in s: break
+    return item
+
 def compute_ordering(adj_list, lengths_when_removed_returned=False):
     ordering = []
     max_degree = max(map(lambda x: len(x), adj_list))
@@ -27,13 +33,13 @@ def compute_ordering(adj_list, lengths_when_removed_returned=False):
         index = 0
         while len(length_to_nodes[index]) == 0:
             index=index + 1
-        for node in length_to_nodes[index]: break
+        node = first_of_set(length_to_nodes[index])
         ordering.append(node)
         lengths_when_removed[node] = node_to_length[node]
         for neighbor in adj_list[node]:
             l = node_to_length[neighbor]
             if neighbor in length_to_nodes[l]:
-                node_to_length[l] = node_to_length[neighbor]-1
+                node_to_length[neighbor] = node_to_length[neighbor]-1
                 length_to_nodes[l].remove(neighbor)
                 length_to_nodes[l-1].add(neighbor)
         length_to_nodes[index].remove(node)
