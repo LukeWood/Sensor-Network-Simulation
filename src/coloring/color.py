@@ -12,6 +12,7 @@ def compute_ordering(adj_list, lengths_when_removed_returned=False):
     ordering = []
     max_degree = max(map(lambda x: len(x), adj_list))
     length_to_nodes = {}
+
     for i in range(max_degree+1):
         length_to_nodes[i] = set()
     length_to_nodes[-1] = set()

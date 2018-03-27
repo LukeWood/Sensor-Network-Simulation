@@ -4,7 +4,7 @@ from generate_graphs import adjacency_list_from_node_list
 from time import process_time
 
 benchmarks = [
-    (8000, 64)
+    (64000, 64)
 ]
 
 for N, A in benchmarks:
