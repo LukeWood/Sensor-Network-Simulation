@@ -1,0 +1,5 @@
+LukeRGG.egg-info/PKG-INFO
+LukeRGG.egg-info/SOURCES.txt
+LukeRGG.egg-info/dependency_links.txt
+LukeRGG.egg-info/top_level.txt
+rgg/__init__.py

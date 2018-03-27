@@ -1,8 +1,8 @@
-from coloring import compute_ordering, color_graph, valid_coloring
-from generate_graphs import unit_square_graph
-from generate_graphs import unit_disc_graph
-from generate_graphs import unit_sphere_graph
-from generate_graphs import adjacency_list_from_node_list
+from rgg.coloring import compute_ordering, color_graph, valid_coloring
+from rgg.generate_graphs import unit_square_graph
+from rgg.generate_graphs import unit_disc_graph
+from rgg.generate_graphs import unit_sphere_graph
+from rgg.generate_graphs import adjacency_list_from_node_list
 from time import process_time
 
 benchmarks = [
@@ -22,7 +22,7 @@ benchmarks = [
 ]
 
 with open("../results/shared/coloring/coloring_data.csv", "w+") as f:
-    f.write("Benchmark,N,A,Topology,Max Degree,Max Degree When Removed,# Colors,Largest Color,Runtime\n")
+    f.write("Benchmark,N,A,Topology,Max Degree,When Removed,Colors,Largest Color,Runtime\n")
     for benchmark, N, A, topology, fn in benchmarks:
         print("Running benchmark %d" % benchmark)
         start = process_time()
