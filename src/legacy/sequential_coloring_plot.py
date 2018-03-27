@@ -38,4 +38,4 @@ for topology, fn in fns:
     plt.ylabel("Frequency")
     plt.title("Degrees vs Degrees When Removed From Graph")
     plt.legend(["Degrees","Degrees When Placed In SLVO"])
-    plt.savefig("../results/%s/coloring/degree_frequencies.png" % topology)
+    plt.savefig("../results/%s/coloring/degree_frequencies.png" % topology, bbox_inches="tight")

@@ -39,7 +39,7 @@
   \begin{table}
     \centering
     \label{square_benchmarks}
-    \csvautotabular{../results/square/benchmarks/data.csv}
+    \csvautotabular{../results/square/generation/benchmarks/data.csv}
 		\caption{Data on Graphs Generated with the Square Topology}
 	\end{table}
 
@@ -52,7 +52,7 @@
   \begin{table}
     \centering
     \label{disc_benchmarks}
-    \csvautotabular{../results/disc/benchmarks/data.csv}
+    \csvautotabular{../results/disc/generation/benchmarks/data.csv}
 		\caption{Data on Graphs Generated with the Disc Topology}
 	\end{table}
 
@@ -64,7 +64,7 @@
   \begin{table}
     \centering
     \label{sphere_benchmarks}
-    \csvautotabular{../results/sphere/benchmarks/data.csv}
+    \csvautotabular{../results/sphere/generation/benchmarks/data.csv}
 		\caption{Data on Graphs Generated with the Sphere Topology}
 	\end{table}
 
@@ -200,7 +200,7 @@
     \begin{figure}
       \centering
       \label{brute_force_runtimes}
-      \includegraphics[width=1 \textwidth]{square/runtime/runtime_chart_naive}
+      \includegraphics[width=1 \textwidth]{square/generation/runtime/runtime_chart_naive}
       \caption{Runtimes of the $O(n^2)$ Algorithm}
     \end{figure}
     Instead, the implementation uses a bucket method to narrow down the required number of comparisons.
@@ -221,7 +221,7 @@
     \begin{figure}
       \centering
       \label{optimised_runtimes_for_connection}
-  		\includegraphics[width=1 \textwidth]{square/runtime/runtime_chart}
+  		\includegraphics[width=1 \textwidth]{square/generation/runtime/runtime_chart}
   		\caption{Runtimes of the $O(n)$ Algorithm}
 	  \end{figure}
 
@@ -285,20 +285,20 @@
     \begin{figure}
       \centering
       \label{drawing_of_square}
-      \includegraphics[width=1 \textwidth]{square/drawing/nodes.png}
+      \includegraphics[width=1 \textwidth]{square/generation/drawing/nodes.png}
       \caption{1000 Points on the Square Topology}
     \end{figure}
 
     \begin{figure}
       \centering
       \label{drawing_of_disc}
-      \includegraphics[width=1 \textwidth]{disc/drawing/nodes.png}
+      \includegraphics[width=1 \textwidth]{disc/generation/drawing/nodes.png}
       \caption{1000 Points on the Disc Topology}
     \end{figure}
     \begin{figure}
       \centering
       \label{drawing_of_sphere}
-      \includegraphics[width=1 \textwidth]{sphere/drawing/sphere_drawing.png}
+      \includegraphics[width=1 \textwidth]{sphere/generation/drawing/sphere_drawing.png}
       \caption{1000 Points on the Sphere Topology}
     \end{figure}
 
@@ -311,21 +311,21 @@
     \begin{figure}
       \centering
       \label{square_edge_density}
-      \includegraphics[width=1 \textwidth]{square/edge_density/8000_64.png}
+      \includegraphics[width=1 \textwidth]{square/generation/edge_density/8000_64.png}
       \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Square}
     \end{figure}
 
     \begin{figure}
       \centering
       \label{disc_edge_density}
-      \includegraphics[width=1 \textwidth]{disc/edge_density/8000_64.png}
+      \includegraphics[width=1 \textwidth]{disc/generation/edge_density/8000_64.png}
       \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Disc}
     \end{figure}
 
     \begin{figure}
       \centering
       \label{sphere_edge_density}
-      \includegraphics[width=1 \textwidth]{sphere/edge_density/8000_64.png}
+      \includegraphics[width=1 \textwidth]{sphere/generation/edge_density/8000_64.png}
       \caption{Edge Densities of an 8000 Node Graph with E(Degree)=64 on Topology Sphere}
     \end{figure}
 
@@ -347,21 +347,21 @@
   \begin{figure}
     \centering
     \label{square_rgg_runtime_chart}
-    \includegraphics[width=1 \textwidth]{square/runtime/runtime_chart}
+    \includegraphics[width=1 \textwidth]{square/generation/runtime/runtime_chart}
     \caption{Runtimes of the $O(n)$ Square RGG Generation Algorithm}
   \end{figure}
 
   \begin{figure}
     \centering
     \label{disc_rgg_runtime_chart}
-    \includegraphics[width=1 \textwidth]{disc/runtime/runtime_chart}
+    \includegraphics[width=1 \textwidth]{disc/generation/runtime/runtime_chart}
     \caption{Runtimes of the $O(n)$ Disc RGG Generation Algorithm}
   \end{figure}
 
   \begin{figure}
     \centering
     \label{sphere_rgg_runtime_chart}
-    \includegraphics[width=1 \textwidth]{sphere/runtime/runtime_chart}
+    \includegraphics[width=1 \textwidth]{sphere/generation/runtime/runtime_chart}
     \caption{Runtimes of the $O(n)$ Sphere RGG Generation Algorithm}
   \end{figure}
 
