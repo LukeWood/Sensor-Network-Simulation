@@ -20,11 +20,11 @@ def gather_statistics(Ns, A, implementation, output_dir=""):
 	from time import process_time
 
 	with open(output_dir + "data.csv", "w+") as f:
-		f.write("Nodes, Expected Average Degree, Real Average Degree, Max Degree, Min Degree, Generation Time\n")
+		f.write("Nodes,E(Avg. Deg),Avg. Deg,Max Deg.,Min Deg.,Seconds\n")
 		for N in Ns:
 			print("Timing %d" % N)
 			start = process_time()
 			nodes = implementation(N, A)
 			end = process_time()
 			runtime = end - start
-			f.write("%d, %d, %f, %d, %d, %f\n" % (N, A, average_degree(nodes), max_degree(nodes), min_degree(nodes), runtime))
+			f.write("%d,%d,%f,%d,%d,%f\n" % (N, A, average_degree(nodes), max_degree(nodes), min_degree(nodes), runtime))

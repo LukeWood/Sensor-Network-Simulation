@@ -1,6 +1,5 @@
 class Node():
-	def __init__(self, x, y, node_number=None):
-		self.x = x
-		self.y = y
+	def __init__(self, dims, node_number=None):
+		self.dims = dims
 		self.edges = []
 		self.node_number = node_number
