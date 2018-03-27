@@ -6,9 +6,10 @@ from generate_graphs import adjacency_list_from_node_list
 import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 
 N = 16000
-A = 32
+A = 64
 
 fns = [
     ("square",unit_square_graph),
@@ -20,7 +21,7 @@ for topology, fn in fns:
     plt.clf()
     nodes = fn(N, A)
     alist = adjacency_list_from_node_list(nodes)
-    ordering, degrees_when_removed = compute_ordering(alist, lengths_when_removed_returned=True)
+    ordering, degrees_when_removed = compute_ordering(alist)
     degrees = list(map(lambda node: len(node), alist))
     max_degree = max(degrees)
 
@@ -32,10 +33,12 @@ for topology, fn in fns:
         densities_when_removed[degree] = densities_when_removed[degree] + 1
 
     x=list(range(max_degree + 1))
-    plt.scatter(x, densities, alpha=.5)
-    plt.scatter(x, densities_when_removed, alpha=.5)
+    ax = sns.barplot(x=x, y=densities, color="c")
+    ax = sns.barplot(x=x, y=densities_when_removed, color="m")
     plt.xlabel("Degrees")
     plt.ylabel("Frequency")
-    plt.title("Degrees vs Degrees When Removed From Graph")
+    plt.title("Degrees vs Degrees When Removed From Graph, N=16000, A=32")
     plt.legend(["Degrees","Degrees When Placed In SLVO"])
+    ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%d'))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(base=5))
     plt.savefig("../results/%s/coloring/degree_frequencies.png" % topology, bbox_inches="tight")

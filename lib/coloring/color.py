@@ -14,7 +14,7 @@ def first_of_set(s):
     for item in s: break
     return item
 
-def compute_ordering(adj_list, lengths_when_removed_returned=False):
+def compute_ordering(adj_list):
     ordering = []
     max_degree = max(map(lambda x: len(x), adj_list))
     length_to_nodes = {}
@@ -22,12 +22,13 @@ def compute_ordering(adj_list, lengths_when_removed_returned=False):
     for i in range(max_degree+1):
         length_to_nodes[i] = set()
     length_to_nodes[-1] = set()
+
     node_to_length = [len(node) for node in adj_list]
     lengths_when_removed = [-1 for _ in adj_list]
 
     for i, node in enumerate(adj_list):
-        l = len(node)
-        length_to_nodes[l].add(i)
+        degree = len(node)
+        length_to_nodes[degree].add(i)
 
     while len(ordering) != len(adj_list):
         index = 0
@@ -37,13 +38,10 @@ def compute_ordering(adj_list, lengths_when_removed_returned=False):
         ordering.append(node)
         lengths_when_removed[node] = node_to_length[node]
         for neighbor in adj_list[node]:
-            l = node_to_length[neighbor]
-            if neighbor in length_to_nodes[l]:
-                node_to_length[neighbor] = node_to_length[neighbor]-1
-                length_to_nodes[l].remove(neighbor)
-                length_to_nodes[l-1].add(neighbor)
+            neighbor_len = node_to_length[neighbor]
+            if neighbor in length_to_nodes[neighbor_len]:
+                node_to_length[neighbor] = neighbor_len-1
+                length_to_nodes[neighbor_len].remove(neighbor)
+                length_to_nodes[neighbor_len-1].add(neighbor)
         length_to_nodes[index].remove(node)
-    if lengths_when_removed_returned:
-        return ordering, lengths_when_removed
-    else:
-        return ordering
+    return ordering[::-1], lengths_when_removed

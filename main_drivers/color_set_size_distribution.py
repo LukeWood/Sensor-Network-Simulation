@@ -16,7 +16,7 @@ def coloring_histogram(coloring, graph_topology=""):
         yvals[d] = yvals[d] + 1
     ax = sns.barplot(x=list(range(max_color+1)), y=yvals)
     plt.title("")
-    plt.xlabel("Degree")
+    plt.xlabel("Color Number")
     plt.ylabel("Frequency")
     plt.title("Frequencies of Colors for Topology %s, N=16000, A=64" % graph_topology)
     name="../results/%s/coloring/color_distribution.png" % graph_topology
@@ -37,6 +37,6 @@ for topology, fn in fns:
     plt.clf()
     nodes = fn(N, A)
     alist = adjacency_list_from_node_list(nodes)
-    ordering = compute_ordering(alist)
+    ordering, _ = compute_ordering(alist)
     coloring = color_graph(ordering, alist)
     coloring_histogram(coloring, graph_topology=topology)

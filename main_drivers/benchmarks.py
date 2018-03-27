@@ -1,4 +1,4 @@
-from coloring import compute_ordering, color_graph
+from coloring import compute_ordering, color_graph, valid_coloring
 from generate_graphs import unit_square_graph
 from generate_graphs import unit_disc_graph
 from generate_graphs import unit_sphere_graph
@@ -22,17 +22,25 @@ benchmarks = [
 ]
 
 with open("../results/shared/coloring/coloring_data.csv", "w+") as f:
-    f.write("Benchmark,N,A,Topology,Number of Colors Used,Runtime\n")
+    f.write("Benchmark,N,A,Topology,Max Degree,Max Degree When Removed,# Colors,Largest Color,Runtime\n")
     for benchmark, N, A, topology, fn in benchmarks:
         print("Running benchmark %d" % benchmark)
         start = process_time()
         nodes = fn(N, A)
         adj_list = adjacency_list_from_node_list(nodes)
-        ordering = compute_ordering(adj_list)
+        ordering, degrees_when_removed = compute_ordering(adj_list)
         coloring = color_graph(ordering, adj_list)
         end = process_time()
-        colors = max(coloring)
+        num_colors = max(coloring)
+        max_degree_when_removed = max(degrees_when_removed)
+        max_degree = max(map(lambda node: len(node),adj_list))
+        color_counts = [0 for _ in range(num_colors + 1)]
+        for color in coloring:
+            color_counts[color] = color_counts[color] + 1
+        largest_color = max(color_counts)
         runtime = end - start
-        f.write("%d,%d,%d,%s,%d,%.6f" % (benchmark, N, A, topology, colors, runtime))
+        if not valid_coloring(coloring, adj_list):
+            raise "OUCH!"
+        f.write("%d,%d,%d,%s,%d,%d,%d,%d,%.6f" % (benchmark, N, A, topology,max_degree, max_degree_when_removed, num_colors,largest_color, runtime))
         f.write("\n")
         f.flush()
