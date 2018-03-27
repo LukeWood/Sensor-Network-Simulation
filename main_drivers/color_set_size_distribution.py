@@ -1,8 +1,8 @@
-from coloring import compute_ordering, color_graph
-from generate_graphs import unit_square_graph
-from generate_graphs import unit_disc_graph
-from generate_graphs import unit_sphere_graph
-from generate_graphs import adjacency_list_from_node_list
+from rgg.coloring import compute_ordering, color_graph
+from rgg.generate_graphs import unit_square_graph
+from rgg.generate_graphs import unit_disc_graph
+from rgg.generate_graphs import unit_sphere_graph
+from rgg.generate_graphs import adjacency_list_from_node_list
 import matplotlib.pyplot as plt
 
 def coloring_histogram(coloring, graph_topology=""):
