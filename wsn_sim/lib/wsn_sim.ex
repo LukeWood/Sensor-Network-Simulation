@@ -18,28 +18,4 @@ defmodule WSNSim do
     ]
   end
 
-  def gather_data(benchmark, n, a, generation_fn) do
-    {runtime, nodes} = :timer.tc(fn -> RGG.unit_square(n, a) end)
-    degrees = RGG.Util.degrees(nodes)
-    avg_deg = RGG.Util.average_degree(degrees)
-    max_deg = RGG.Util.max_degree(degrees)
-    min_deg = RGG.Util.min_degree(degrees)
-
-    {benchmark, n, a, avg_deg, max_deg, min_deg, runtime}
-  end
-
-  def run_benchmark(benchmark, n, a, Square) do
-    gather_data(benchmark, n, a, &RGG.unit_square/2)
-  end
-  def run_benchmark(benchmark, n, a, Disc) do
-    gather_data(benchmark, n, a, &RGG.unit_disc/2)
-  end
-  def run_benchmark(benchmark, n, a, Sphere) do
-    gather_data(benchmark, n, a, &RGG.unit_sphere/2)
-  end
-
-  def run_all_benchmarks do
-
-  end
-
 end
