@@ -1,0 +1,4 @@
+Benchmark,N,A,Topology,Max Deg,Max Removed,Largest Color,Runtime
+1,1000,32,"Square",44,6,118,0.055388
+2,8000,64,"Square",88,15,405,0.782281
+3,16000,32,"Square",51,5,435,2.204833
