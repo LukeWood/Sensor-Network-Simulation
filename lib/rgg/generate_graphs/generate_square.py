@@ -21,6 +21,6 @@ def generate_random_points(N):
     ys = uniform(0, 1, N)
     return [Node((xs[i], ys[i]), node_number=i) for i in range(N)]
 
-def unit_square_graph(N, A):
+def unit_square_graph(N, A, return_positions=False):
     from .common import generate_graph
-    return generate_graph(N, A, calculate_radius_square, generate_random_points)
+    return generate_graph(N, A, calculate_radius_square, generate_random_points, return_positions=return_positions)
