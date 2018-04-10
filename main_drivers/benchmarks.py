@@ -26,8 +26,7 @@ with open("../results/shared/coloring/coloring_data.csv", "w+") as f:
     for benchmark, N, A, topology, fn in benchmarks:
         print("Running benchmark %d" % benchmark)
         start = process_time()
-        nodes = fn(N, A)
-        adj_list = adjacency_list_from_node_list(nodes)
+        adh_list = fn(N, A)
         ordering, degrees_when_removed = compute_ordering(adj_list)
         coloring = color_graph(ordering, adj_list)
         end = process_time()

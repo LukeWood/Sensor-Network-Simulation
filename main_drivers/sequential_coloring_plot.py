@@ -19,8 +19,7 @@ fns = [
 
 for topology, fn in fns:
     plt.clf()
-    nodes = fn(N, A)
-    alist = adjacency_list_from_node_list(nodes)
+    alist = fn(N, A)
     ordering, degrees_when_removed = compute_ordering(alist)
     degrees = list(map(lambda node: len(node), alist))
     max_degree = max(degrees)

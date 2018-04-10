@@ -4,13 +4,11 @@ from rgg.generate_graphs import adjacency_list_from_node_list
 from time import process_time
 
 benchmarks = [
-    (64000, 64)
+    (2000, 32)
 ]
 
 for N, A in benchmarks:
-    nodes = unit_square_graph(N, A)
-    adj_list = adjacency_list_from_node_list(nodes)
-
-    ordering = compute_ordering(adj_list)
+    adj_list = unit_square_graph(N, A)
+    ordering, _ = compute_ordering(adj_list)
     coloring = color_graph(ordering, adj_list)
     print(max(coloring))

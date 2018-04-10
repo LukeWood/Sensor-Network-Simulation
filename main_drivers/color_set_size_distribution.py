@@ -35,8 +35,7 @@ fns = [
 
 for topology, fn in fns:
     plt.clf()
-    nodes = fn(N, A)
-    alist = adjacency_list_from_node_list(nodes)
+    adj_list = fn(N, A)
     ordering, _ = compute_ordering(alist)
     coloring = color_graph(ordering, alist)
     coloring_histogram(coloring, graph_topology=topology)
