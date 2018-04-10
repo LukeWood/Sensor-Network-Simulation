@@ -27,6 +27,8 @@ def connect_nodes(nodes, R):
 			operation_nodes = get_adjacent_nodes_for_bucket(x, y, buckets)
 			for n1 in base_nodes:
 				for n2 in operation_nodes:
+					if n1 == n2:
+						continue
 					if distance(n1, n2) <= R:
 						n1.edges.append(n2.node_number)
 						n2.edges.append(n1.node_number)
