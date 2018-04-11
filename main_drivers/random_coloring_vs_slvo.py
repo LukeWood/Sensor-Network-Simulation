@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 N = 16000
 As = [
-    10, 32, 64, 96, 128, 
+    10, 32, 64, 96, 128, 156, 196, 256 
 ]
 
 random_ys = []
