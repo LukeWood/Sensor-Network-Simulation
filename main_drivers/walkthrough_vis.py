@@ -90,6 +90,35 @@ def draw_ordering_graph(ordering_states, positions):
     plt.suptitle("Visualization of the removal of nodes during SLVO")
     plt.savefig("../results/walkthrough/ordering.png", bbox_inches="tight")
 
+def draw_coloring_graph(coloring_order, positions):
+    nodes = {}
+    plot_index=0
+    fig, axes = plt.subplots(4, 5)
+    x = 0
+    y = 0
+    for state in ordering_states[:-1]:
+        G = nx.Graph()
+        pos = {}
+        for index, position in enumerate(positions):
+            if state[index] is False:
+                continue
+            pos[index]=position
+            G.add_node(index, pos=position, size=1)
+        for node, neighbors in enumerate(state):
+            if neighbors is False:
+                continue
+            for neighbor in neighbors:
+                G.add_edge(node, neighbor)
+        nx.draw(G, pos=pos,node_color="blue", ax=axes[y, x], node_size=50)
+        if x == 4:
+            x = 0
+            y = y + 1
+        else:
+            x = x + 1
+    plt.suptitle("Coloring of Graph during SLVO Coloring")
+    plt.savefig("../results/walkthrough/ordering.png", bbox_inches="tight")
+
+
 def draw_uncolored(adj_list, positions):
     plt.clf()
     G = nx.Graph()
