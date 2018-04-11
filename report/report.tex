@@ -70,7 +70,7 @@
 		The first two are used during graph generation and the latter during conversion to an adjacency list.
 		This data structure could be used interchangeably with a statically indexed tuple instead of an object to avoid any overhead associated with objects in python, however the readability gained from using a custom node class heavily outweighs the marginal performance benefit gained from using a statically indexed tuple.
 		Both of these data structures provide $O(1)$ read and write operations.
-    The python wiki states that dictionary access time is amortized O(1), however in the worst case can be O(n)\cite{pythonwikiruntimes}.
+    The python wiki states that dictionary access time is amortized $O(1)$, however in the worst case can be $O(n)$\cite{pythonwikiruntimes}.
     That being said, most interpreters will convert objects with known attributes into statically indexed arrays so it is likely that there would be neglible performance difference anyways.
 		If the goal were to generate gigantic graphs then an argument could be made to switch over the statically indexed tuples to reduce the access time for attributes by a bit as tuples use static memory address offsets.
 
