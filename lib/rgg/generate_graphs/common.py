@@ -40,10 +40,12 @@ def connect_nodes(nodes, R):
 						n1.edges.append(n2.node_number)
 	return list(map((lambda node: list(set(node.edges))), nodes))
 
-def generate_graph(N, A, radius_function, point_generation_function, return_positions=False):
+def generate_graph(N, A, radius_function, point_generation_function, return_positions=False, return_radius=False):
 	R = radius_function(N, A)
 	nodes = point_generation_function(N)
 	if return_positions:
 		dims = list(map((lambda node: node.dims), nodes))
 		return connect_nodes(nodes, R), dims
+	elif return_radius:
+		return connect_nodes(nodes, R), R
 	return connect_nodes(nodes, R)

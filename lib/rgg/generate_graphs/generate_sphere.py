@@ -21,6 +21,6 @@ def generate_random_points(N):
     return results
 
 
-def unit_sphere_graph(N, A):
+def unit_sphere_graph(N, A, **kwargs):
     from .common import generate_graph
-    return generate_graph(N, A, calculate_radius_sphere, generate_random_points)
+    return generate_graph(N, A, calculate_radius_sphere, generate_random_points, **kwargs)

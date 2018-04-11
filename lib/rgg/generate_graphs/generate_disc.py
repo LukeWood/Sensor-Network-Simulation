@@ -23,6 +23,6 @@ def generate_random_points(N):
 			n = n + 1
 	return result
 
-def unit_disc_graph(N, A):
+def unit_disc_graph(N, A, **kwargs):
 	from .common import generate_graph
-	return generate_graph(N, A, calculate_radius_disc, generate_random_points)
+	return generate_graph(N, A, calculate_radius_disc, generate_random_points, **kwargs)
