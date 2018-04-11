@@ -38,11 +38,12 @@ def connect_nodes(nodes, R):
 						continue
 					if distance(n1, n2) <= R:
 						n1.edges.append(n2.node_number)
-	return list(map((lambda node: node.edges), nodes))
+	return list(map((lambda node: list(set(node.edges))), nodes))
 
 def generate_graph(N, A, radius_function, point_generation_function, return_positions=False):
 	R = radius_function(N, A)
 	nodes = point_generation_function(N)
 	if return_positions:
-		return connect_nodes(nodes, R), list(map((lambda node: node.dims), nodes))
+		dims = list(map((lambda node: node.dims), nodes))
+		return connect_nodes(nodes, R), dims
 	return connect_nodes(nodes, R)
