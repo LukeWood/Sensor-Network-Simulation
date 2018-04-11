@@ -85,6 +85,7 @@ def draw_ordering_graph(ordering_states, positions):
             y = y + 1
         else:
             x = x + 1
+    plt.title("Visualization of the removal of nodes during SLVO")
     plt.savefig("../results/walkthrough/ordering.png", bbox_inches="tight")
 
 def draw_uncolored(adj_list, positions):
