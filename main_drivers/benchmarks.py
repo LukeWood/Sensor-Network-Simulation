@@ -16,12 +16,14 @@ benchmarks = [
     (8,  8000,    64, "Disc",   unit_disc_graph),
     (9,  64000,   64, "Disc",   unit_disc_graph),
     (10, 64000,   128,"Disc",   unit_disc_graph),
-    (11, 16000,   64, "Sphere", unit_sphere_graph),
     (12, 32000,   128,"Sphere", unit_sphere_graph),
+    (11, 16000,   64, "Sphere", unit_sphere_graph),
     (13, 64000,   128,"Sphere", unit_sphere_graph)
 ]
 
-def draw_backbone(backbones, positions, coloring, A, N):
+def draw_backbone(backbones, positions, coloring, A, N, topology):
+    if topology == "Sphere":
+        positions = list(map(lambda x: (x[0], x[1]), positions))
     import matplotlib.pyplot as plt
     import networkx as nx
     plt.clf()
@@ -56,8 +58,8 @@ def draw_backbone(backbones, positions, coloring, A, N):
         pathcollection = nx.draw_networkx_edges(G, pos=pos, zorder=20, node_color=color_map, ax=axes[x], node_size=2500/(N*N))
         pathcollection.zorder = 20
         x = x + 1
-    plt.suptitle("Two Biggest Backbones of RGG N=%d, A=%d" % (N, A))
-    plt.savefig("../results/backbone/backbone_%d_%d.png" % (N, A), bbox_inches="tight")
+    plt.suptitle("Two Biggest Backbones of RGG N=%d, A=%d, Topology=%s" % (N, A, topology))
+    plt.savefig("../results/backbone/backbone_%d_%d_%s.png" % (N, A, topology), bbox_inches="tight")
 
 with open("../results/shared/coloring/coloring_data.csv", "w+") as f:
     f.write("Benchmark,N,A,R,Topology,Avg. Degree,Min Degree,Max Degree,When Removed,Colors,Largest Color,Runtime\n")
@@ -81,7 +83,7 @@ with open("../results/shared/coloring/coloring_data.csv", "w+") as f:
 
         flatten = lambda l: [item for sublist in l for item in sublist]
         largest_backbone_adj_lists.sort(key=lambda backbone: -len(flatten(filter(lambda n: n!=False,backbone))))
-        draw_backbone(largest_backbone_adj_lists[:2], positions, coloring, N, A)
+        draw_backbone(largest_backbone_adj_lists[:2], positions, coloring, N, A, topology)
 
         num_colors = max(coloring)
         max_degree_when_removed = max(degrees_when_removed)
