@@ -62,7 +62,7 @@ def draw_backbone(backbones, positions, coloring, A, N, topology):
     plt.savefig("../results/backbone/backbone_%d_%d_%s.png" % (N, A, topology), bbox_inches="tight")
 
 with open("../results/shared/coloring/coloring_data.csv", "w+") as f:
-    f.write("Benchmark,N,A,R,Topology,Avg. Degree,Min Degree,Max Degree,When Removed,Colors,Largest Color,Runtime\n")
+    f.write("Benchmark,N,A,R,Topology,Avg. Degree,Min Degree,Max Degree,When Removed,Colors,Largest Color,Backbone Order,Backbone Size,Backbone Domination,Runtime\n")
     for benchmark, N, A, topology, fn in benchmarks:
         print("Running benchmark %d" % benchmark)
         start = process_time()
@@ -97,6 +97,22 @@ with open("../results/shared/coloring/coloring_data.csv", "w+") as f:
         largest_color = max(color_counts)
         runtime = end - start
 
-        f.write("%d,%d,%d,%.6f,%s,%d,%d,%d,%d,%d,%d,%.6f" % (benchmark, N, A, R, topology,avg_degree,min_degree,max_degree, max_degree_when_removed, num_colors,largest_color, runtime))
+        number_one_backbone=largest_backbone_adj_lists[0]
+        backbone_order = len(flatten(filter(lambda x: x != False, number_one_backbone)))
+        backbone_size = len(list(filter(lambda x: x!=False, number_one_backbone)))
+        backbone_nodes = []
+        for node, neighbors in enumerate(number_one_backbone):
+            if neighbors == False:
+                continue
+            backbone_nodes.append(node)
+
+        dominated_nodes = set()
+        for node in backbone_nodes:
+            dominated_nodes.add(node)
+            for neighbor in adj_list[node]:
+                dominated_nodes.add(neighbor)
+        backbone_domination=len(dominated_nodes)/len(adj_list)
+
+        f.write("%d,%d,%d,%.6f,%s,%d,%d,%d,%d,%d,%d,%d,%d,%.6f,%.6f" % (benchmark, N, A, R, topology,avg_degree,min_degree,max_degree, max_degree_when_removed, num_colors,largest_color,backbone_order, backbone_size, backbone_domination, runtime))
         f.write("\n")
         f.flush()
