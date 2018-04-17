@@ -1,6 +1,6 @@
 from rgg.generate_graphs import unit_square_graph
 from rgg.coloring import compute_ordering, color_graph
-from rgg.backbone import find_backbones
+from rgg.backbone import find_backbones, largest_backbone
 import pandas as pd
 import numpy as np
 import networkx as nx
@@ -190,9 +190,41 @@ def draw_all_backbones(backbones, positions, coloring):
             y = y + 1
         else:
             x = x + 1
+    plt.suptitle("Potential Backbones of Graph with N=20, R=.4")
+    plt.savefig("../results/walkthrough/potential_backbones.png", bbox_inches="tight")
 
-    plt.suptitle("Backbones of Graph with N=20, R=.4")
-    plt.savefig("../results/walkthrough/backbones.png", bbox_inches="tight")
+
+def draw_largest_backbones(backbones, positions, coloring):
+    fig, axes = plt.subplots(2, 3)
+    x = 0
+    y = 0
+    colors = ['#6A1B9A', '#D50000', '#AEEA00', '#00B0FF', '#00B8D4', '#00BFA5', '#00C853', '#DD2C00', '#FFFF00']
+
+    for current_backbone in backbones:
+        G = nx.Graph()
+        color_map = {}
+
+        for node_index, node in enumerate(current_backbone):
+            if node == False:
+                G.add_node(node_index)
+                continue
+            G.add_node(node_index)
+            for neighbor in node:
+                G.add_edge(node_index, neighbor)
+
+        pos = {}
+        for node_index, position in enumerate(positions):
+            pos[node_index] = position
+
+        color_map = [colors[coloring[x]] if current_backbone[x] != False else "#CCCCCC" for x in G.node]
+        nx.draw(G, pos=pos,node_color=color_map, ax=axes[y, x], node_size=50)
+        if x == 2:
+            x = 0
+            y = y + 1
+        else:
+            x = x + 1
+    plt.suptitle("Largest Backbones of Graph with N=20, R=.4")
+    plt.savefig("../results/walkthrough/largest_backbones.png", bbox_inches="tight")
 
 
 if __name__ == "__main__":
@@ -208,3 +240,12 @@ if __name__ == "__main__":
 
     backbones = find_backbones(coloring, adj_list)
     draw_all_backbones(backbones, positions, coloring)
+
+    largest_backbones = list(map(largest_backbone, backbones))
+    largest_backbone_adj_lists = []
+    for potential_backbones, largest_backbone in zip(backbones, largest_backbones):
+        backbone_set = set(largest_backbone)
+        potential_backbones = list(map(lambda item: item[1] if item[0] in backbone_set else False, enumerate(potential_backbones)))
+        largest_backbone_adj_lists.append(potential_backbones)
+
+    draw_largest_backbones(largest_backbone_adj_lists, positions, coloring)
