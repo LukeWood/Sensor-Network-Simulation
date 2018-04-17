@@ -1,5 +1,6 @@
 from rgg.generate_graphs import unit_square_graph
 from rgg.coloring import compute_ordering, color_graph
+from rgg.backbone import find_backbones
 import pandas as pd
 import numpy as np
 import networkx as nx
@@ -153,6 +154,47 @@ def draw_colored(adj_list, positions, coloring):
     nx.draw(G, pos=pos, node_color=color_map)
     plt.savefig("../results/walkthrough/final_colored.png", bbox_inches="tight")
 
+def draw_backbone(backbone, positions, coloring):
+    plt.clf()
+
+    plt.title("Backbone of a WSN with N=%d, A=%d" % (N, A))
+    nx.draw(G, pos=pos, node_color=color_map)
+    plt.savefig("../results/backbone/backbone_display.png", bbox_inches="tight")
+
+def draw_all_backbones(backbones, positions, coloring):
+    fig, axes = plt.subplots(2, 3)
+    x = 0
+    y = 0
+    colors = ['#6A1B9A', '#D50000', '#AEEA00', '#00B0FF', '#00B8D4', '#00BFA5', '#00C853', '#DD2C00', '#FFFF00']
+
+    for current_backbone in backbones:
+        G = nx.Graph()
+        color_map = {}
+
+        for node_index, node in enumerate(current_backbone):
+            if node == False:
+                G.add_node(node_index)
+                continue
+            G.add_node(node_index)
+            for neighbor in node:
+                G.add_edge(node_index, neighbor)
+
+        pos = {}
+        for node_index, position in enumerate(positions):
+            pos[node_index] = position
+
+        color_map = [colors[coloring[x]] if current_backbone[x] != False else "#CCCCCC" for x in G.node]
+        nx.draw(G, pos=pos,node_color=color_map, ax=axes[y, x], node_size=50)
+        if x == 2:
+            x = 0
+            y = y + 1
+        else:
+            x = x + 1
+
+    plt.suptitle("Backbones of Graph with N=20, R=.4")
+    plt.savefig("../results/walkthrough/backbones.png", bbox_inches="tight")
+
+
 if __name__ == "__main__":
     adj_list, positions = unit_square_graph(N, A, return_positions=True)
     ordering, ordering_states = compute_ordering(adj_list)
@@ -163,3 +205,6 @@ if __name__ == "__main__":
 
     draw_ordering_graph(ordering_states, positions)
     draw_coloring_graph(adj_list, ordering, positions, coloring)
+
+    backbones = find_backbones(coloring, adj_list)
+    draw_all_backbones(backbones, positions, coloring)
