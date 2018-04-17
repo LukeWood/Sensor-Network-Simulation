@@ -14,7 +14,7 @@
 
 \begin{document}
 
-  \title{Linear Time Generation of Simulated Wireless Sensor Networks with Random Geometric Graphs}
+  \title{Linear Time Generation and Coloring of Simulated Wireless Sensor Networks with Random Geometric Graphs}
   \author{Luke Wood}
   \maketitle
 
@@ -116,6 +116,9 @@
 
     A possible approach to fixing this implementation would be to pick a radius between 0 and 1, and then rotate by a random number of radians between 0 and 2$\pi$.
     This was not implemented as I was unsure if this would produce a uniform distribution.
+
+    This is not pure $O(n)$ as due to the non-determinism it could theoretically run indefinitely.
+    This is however of lower probability than flipping a coin repeateadly and getting heads for all eternity.
 
   \paragraph{Sphere Point Generation}
     Generating points on the surface of the unit sphere can be solved using math.
