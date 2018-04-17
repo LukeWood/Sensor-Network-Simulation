@@ -20,7 +20,7 @@ def possible_backbones(top_colors):
     from itertools import combinations
     return list(combinations(top_colors, r=2))
 
-def find_backbones(coloring, adj_list):
+def find_potential_backbones(coloring, adj_list):
     top_colors = top_four_colors(color_frequencies(coloring))
     backbone_colors = possible_backbones(top_colors)
 

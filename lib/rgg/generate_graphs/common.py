@@ -43,6 +43,9 @@ def connect_nodes(nodes, R):
 def generate_graph(N, A, radius_function, point_generation_function, return_positions=False, return_radius=False):
 	R = radius_function(N, A)
 	nodes = point_generation_function(N)
+	if return_positions and return_radius:
+		dims = list(map((lambda node: node.dims), nodes))
+		return connect_nodes(nodes, R), dims, R
 	if return_positions:
 		dims = list(map((lambda node: node.dims), nodes))
 		return connect_nodes(nodes, R), dims

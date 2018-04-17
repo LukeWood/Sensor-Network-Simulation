@@ -1,6 +1,6 @@
 from rgg.generate_graphs import unit_square_graph
 from rgg.coloring import compute_ordering, color_graph
-from rgg.backbone import find_backbones, largest_backbone
+from rgg.backbone import find_potential_backbones, largest_backbone
 import pandas as pd
 import numpy as np
 import networkx as nx
@@ -154,13 +154,6 @@ def draw_colored(adj_list, positions, coloring):
     nx.draw(G, pos=pos, node_color=color_map)
     plt.savefig("../results/walkthrough/final_colored.png", bbox_inches="tight")
 
-def draw_backbone(backbone, positions, coloring):
-    plt.clf()
-
-    plt.title("Backbone of a WSN with N=%d, A=%d" % (N, A))
-    nx.draw(G, pos=pos, node_color=color_map)
-    plt.savefig("../results/backbone/backbone_display.png", bbox_inches="tight")
-
 def draw_all_backbones(backbones, positions, coloring):
     fig, axes = plt.subplots(2, 3)
     x = 0
@@ -223,7 +216,7 @@ def draw_largest_backbones(backbones, positions, coloring):
             y = y + 1
         else:
             x = x + 1
-    plt.suptitle("Largest Backbones of Graph with N=20, R=.4")
+    plt.suptitle("Largest Backbones Sorted By # Edges of Graph with N=20, R=.4.")
     plt.savefig("../results/walkthrough/largest_backbones.png", bbox_inches="tight")
 
 
@@ -238,7 +231,7 @@ if __name__ == "__main__":
     draw_ordering_graph(ordering_states, positions)
     draw_coloring_graph(adj_list, ordering, positions, coloring)
 
-    backbones = find_backbones(coloring, adj_list)
+    backbones = find_potential_backbones(coloring, adj_list)
     draw_all_backbones(backbones, positions, coloring)
 
     largest_backbones = list(map(largest_backbone, backbones))
@@ -247,5 +240,8 @@ if __name__ == "__main__":
         backbone_set = set(largest_backbone)
         potential_backbones = list(map(lambda item: item[1] if item[0] in backbone_set else False, enumerate(potential_backbones)))
         largest_backbone_adj_lists.append(potential_backbones)
+
+    flatten = lambda l: [item for sublist in l for item in sublist]
+    largest_backbone_adj_lists.sort(key=lambda backbone: -len(flatten(filter(lambda n: n!=False,backbone))))
 
     draw_largest_backbones(largest_backbone_adj_lists, positions, coloring)
