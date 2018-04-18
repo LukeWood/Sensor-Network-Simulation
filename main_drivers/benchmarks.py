@@ -16,8 +16,8 @@ benchmarks = [
     (8,  8000,    64, "Disc",   unit_disc_graph),
     (9,  64000,   64, "Disc",   unit_disc_graph),
     (10, 64000,   128,"Disc",   unit_disc_graph),
-    (12, 32000,   128,"Sphere", unit_sphere_graph),
     (11, 16000,   64, "Sphere", unit_sphere_graph),
+    (12, 32000,   128,"Sphere", unit_sphere_graph),
     (13, 64000,   128,"Sphere", unit_sphere_graph)
 ]
 
