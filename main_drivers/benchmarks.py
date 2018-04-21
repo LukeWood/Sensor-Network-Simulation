@@ -61,20 +61,27 @@ def draw_backbone(backbones, positions, coloring, A, N, topology):
     plt.suptitle("Two Biggest Backbones of RGG N=%d, A=%d, Topology=%s" % (N, A, topology))
     plt.savefig("../results/backbone/backbone_%d_%d_%s.png" % (N, A, topology), bbox_inches="tight")
 
-with open("../results/shared/coloring/coloring_data.csv", "w+") as f:
-    f.write("Benchmark,N,A,R,Topology,Avg. Degree,Min Degree,Max Degree,When Removed,Colors,Largest Color,Backbone Order,Backbone Size,Backbone Domination,Runtime\n")
+with open("../results/benchmarks/full_benchmark.csv", "w+") as f:
+    headers = ["Benchmark","N","A","R","Topology","Avg. Degree","Min Degree",
+        "Max Degree","Average Degree When Removed","Colors","Largest Color",
+        "Backbone Order","Backbone Size","Backbone Domination",
+        "Number of Backbone Faces",
+        "Generation Runtime", "Coloring Runtime", "Backbone Runtime", "Total Runtime"]
+    f.write(",".join(headers)+"\n")
     for benchmark, N, A, topology, fn in benchmarks:
         print("Running benchmark %d" % benchmark)
-        start = process_time()
+        start_generation = process_time()
         adj_list,positions, R = fn(N, A, return_radius=True, return_positions=True)
+        end_generation = process_time()
+        start_coloring = end_generation
         ordering, degrees_when_removed = compute_ordering(adj_list)
         coloring = color_graph(ordering, adj_list)
+        end_coloring = process_time()
+        start_backbone = end_coloring
         potential_backbones = find_potential_backbones(coloring, adj_list)
+        end_backbone = process_time()
 
         largest_backbones = list(map(largest_backbone, potential_backbones))
-
-        end = process_time()
-
         largest_backbone_adj_lists = []
         for potential_backbones2, backbone in zip(potential_backbones, largest_backbones):
             backbone_set = set(backbone)
@@ -95,16 +102,21 @@ with open("../results/shared/coloring/coloring_data.csv", "w+") as f:
         for color in coloring:
             color_counts[color] = color_counts[color] + 1
         largest_color = max(color_counts)
-        runtime = end - start
 
+        runtime = end_backbone - start_generation
+        coloring_runtime = end_coloring - start_coloring
+        generation_runtime = end_generation - start_generation
+        backbone_runtime = end_backbone - start_backbone
         number_one_backbone=largest_backbone_adj_lists[0]
         backbone_order = len(flatten(filter(lambda x: x != False, number_one_backbone)))
         backbone_size = len(list(filter(lambda x: x!=False, number_one_backbone)))
         backbone_nodes = []
+        backbone_edges = []
         for node, neighbors in enumerate(number_one_backbone):
             if neighbors == False:
                 continue
             backbone_nodes.append(node)
+            backbone_edges.append(neighbors)
 
         dominated_nodes = set()
         for node in backbone_nodes:
@@ -113,6 +125,15 @@ with open("../results/shared/coloring/coloring_data.csv", "w+") as f:
                 dominated_nodes.add(neighbor)
         backbone_domination=len(dominated_nodes)/len(adj_list)
 
-        f.write("%d,%d,%d,%.6f,%s,%d,%d,%d,%d,%d,%d,%d,%d,%.6f,%.6f" % (benchmark, N, A, R, topology,avg_degree,min_degree,max_degree, max_degree_when_removed, num_colors,largest_color,backbone_order, backbone_size, backbone_domination, runtime))
+        num_faces = "N/A"
+        if topology == "Sphere":
+            num_edges = sum(map(lambda node: len(node),backbone_edges))
+            num_faces = 2 + num_edges - len(backbone_nodes)
+            num_faces = str(num_faces)
+
+        f.write("%d,%d,%d,%.6f," % (benchmark, N, A, R))
+        f.write("%s,%d,%d,%d," % (topology,avg_degree,min_degree,max_degree))
+        f.write("%d,%d,%d,%d," % (max_degree_when_removed, num_colors,largest_color,backbone_order))
+        f.write("%d,%.6f,%s,%.6f,%.6f,%.6f,%.6f" % (backbone_size, backbone_domination, num_faces,generation_runtime,coloring_runtime, backbone_runtime, runtime))
         f.write("\n")
         f.flush()

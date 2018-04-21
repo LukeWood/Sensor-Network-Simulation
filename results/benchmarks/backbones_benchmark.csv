@@ -1,0 +1,6 @@
+Benchmark,N,A,Topology,Backbone Order,Backbone Size,Backbone Domination,Number of Backbone Faces,Backbone Runtime
+1,1000,32,Square,356,149,0.992000,N/A,0.002872
+2,8000,64,Square,1670,639,0.997125,N/A,0.031183
+3,16000,32,Square,5370,2216,0.986938,N/A,0.056506
+4,64000,64,Square,13046,5027,0.998875,N/A,0.245150
+5,64000,128,Square,7524,2725,0.999609,N/A,0.395333

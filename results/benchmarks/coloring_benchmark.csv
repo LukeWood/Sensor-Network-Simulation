@@ -1,0 +1,6 @@
+Benchmark,N,A,Topology,Average Degree When Removed,Colors,Largest Color,Coloring Runtime
+1,1000,32,Square,19,19,77,0.010196
+2,8000,64,Square,41,38,325,0.190919
+3,16000,32,Square,24,23,1140,0.198154
+4,64000,64,Square,41,39,2539,1.556953
+5,64000,128,Square,72,66,1370,2.983963

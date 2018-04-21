@@ -14,7 +14,7 @@
 
 \begin{document}
 
-  \title{Linear Time Generation and Coloring of Simulated Wireless Sensor Networks with Random Geometric Graphs}
+  \title{Linear Time Generation and Coloring of Simulated Wireless Sensor Networks Simulated with Random Geometric Graphs}
   \author{Luke Wood}
   \maketitle
 
@@ -24,7 +24,7 @@
 	They are incredibly expensive to develop and test which makes them a great candidate for simulation as a preliminary way to gather data.
 	Vlady Ravelomananana and Hichem Kenniche from the University of Paris first explored the concept of using random geometric graphs (RGGs) to attempt to model wireless sensor networks \cite{kenniche2010random}.
   At the moment random geographic graphs are the state of the art method for simulating WSNs.
-	This project usesRGGs as a way to gather valuable information about how wireless sensor networks will possibly function and communicate.
+	This project uses RGGs as a way to gather valuable information about how wireless sensor networks will possibly function and communicate.
 
   \subsection{Introduction and Summary}
 	This report generates and analyzes RGGs in the following ways as an attempt to gain some insight into the behavior of wireless sensor networks:
@@ -42,15 +42,16 @@
 	This happens due to there not being enough nodes in the graph for the real radius to reach the expected value.
   The random error in the point generation is more apparent when there are fewer nodes in the graph.
 
-  The coloring algorithms also run in $O(V+E)$ which is linear time in graph theory.
+  The coloring algorithms also run in $O(V+E)$ which is linear time as the edges are capped by the value A which is a constant.
+  The runtimes could also be rewritten as $O(V + A*V)$ which is $O(V)$ assuming the A is a constant value.
 
   \begin{table}
     \label{benchmarks}
     \centering
     \begin{adjustbox}{width=1\textwidth}
-    \csvautotabular{../results/shared/coloring/coloring_data.csv}
+    \csvautotabular{../results/benchmarks/full_benchmark.csv}
     \end{adjustbox}
-    \caption{Benchmark Data Generated}
+    \caption{Full Benchmark Data Generated, Subsets of this Data Available in Other Tables for Readability}
   \end{table}
 
   Reference table \ref{benchmarks} for the full benchmarks.
@@ -58,8 +59,16 @@
   \subsection{Programming Environment Description}
 		The implementation of the algorithm used to gather the data supporting this report was gathered on a 15 inch Macbook pro 2017 with a 2.9 GHz Intel Core i7 processor and 16 GB of RAM.
 		The computer is running macOS High Sierra.
-		The graph generation is written in python 3 as generating and connection a graph is not super computationally expensive with even decently large inputs such as 100000 (assuming $O(n) algorithms$).
-		The later algorithms may be implemented in a different language such as Elixir to get high levels of concurrency and higher efficiency due to type inference (as opposed to python's dynamic typing).
+    The python environment is used for the ability to leverage the networkx library for plotting graphs as well as matplotlib to easily create charts.
+    The algorithms are implemented to run in linear time and despite pythons low speed still run in reasonable time spans even on large input sizes.
+
+    The generation as well as coloring algorithms were both implemented again in the Elixir programming language, however this proved problematic as all data structures are immutable.
+    On small inputs, the Elixir implementation ran up to 5 times as fast as the python implementation, however there is no data structure with $O(1)$ insertion, access, and deletion in Elixir.
+    The best runtime possible in pure Elixir was $O(n*log(n))$ which was worse than the python version.
+    This made it impossible to implement the coloring algorithm in linear time without interopping with C or Erlang.
+    Due to time constraints, it was not feasible to get the interop working with Erlang or C in time.
+    Thus the implementation is still in python, however if I could do it again I would either follow through with the Erlang interop and continue in Elixir or use a different platform entirely.
+
   \section{Reduction to Practice}
     This section will describe the transition from theory to implementation.
     This section will also give a detailed analysis of the algorithms used in this project as well as their asymptotic runtimes.
@@ -74,21 +83,21 @@
     That being said, most interpreters will convert objects with known attributes into statically indexed arrays so it is likely that there would be neglible performance difference anyways.
 		If the goal were to generate gigantic graphs then an argument could be made to switch over the statically indexed tuples to reduce the access time for attributes by a bit as tuples use static memory address offsets.
 
-		The second mentioned data structure is the adjacency list.
+		The second data structure used in the implementation is the adjacency list.
 		Adjacency lists are an efficient graph representation that we will use in the subsequent reports.
-		Adjacency lists require only $O(v*e)$ storage as opposed to the $O(v^2)$ required for adjacency matrixes.
-		This is handy in situations where the expected average number of edges is significantly lower than the number of nodes in the graph.
-		Despite the huge potential savings on storage, the only sacrifice adjacency lists make is in the lookup operation to determine if there is an edge between two nodes.
-		This takes $O(e)$ in an adjacency list as opposed to $O(1)$ in an adjacency matrix.
+		Adjacency lists require only $O(V+E)$ storage as opposed to the $O(v^2)$ required for adjacency matrixes.
+    Despite the huge potential savings on storage, the only sacrifice adjacency lists make is in the lookup operation to determine if there is an edge between two nodes.
+    The sacrifice made in adjacency lists is $O(A)$ lookup time for the existence of an edge as opposed to $O(1)$ lookup time available in adjacency matrixes.
+		This makes adjacency lists useful in situations where the expected average number of edges is significantly lower than the number of nodes in the graph.
 
     In the coloring portion of the project, I used the same data structures above as well as a hash set.
     When I am keeping track of which nodes are of degree n, I frequently have to move each node's neighbors down a degree.
     In order to get optimal big O, I needed to use a data structure with constant time access, constant time add, and constant time deletion.
     Hash set seemed like a perfect match for the problem at hand as we only needed to know of each member was a set.
-    In python, sets have amortized $O(n)$ runtime for all three of the aforementioned operations\cite{pythonwikiruntimes}.
+    In python, sets have amortized $O(1)$ runtime for all three of the aforementioned operations\cite{pythonwikiruntimes}.
 
 	\subsection{Algorithm Description}
-		This section gives a detailed analysis of the algorithms used in the graph generation and coloring.
+		This section gives a detailed analysis of the algorithms used in the graph generation, graph coloring, and backbone selection.
 
   \paragraph{Square Point Generation}
 		The algorithm to generate the points in the unit square topology is simple.
@@ -246,6 +255,26 @@
       \caption{A Fully Colored Graph}
     \end{figure}
 
+    \paragraph{Backbone Selection}
+    After the graph coloring is completed, the next thing done is selecting the communication backbone.
+    This is done by first selecting the four largest color sets produced from the coloring above.
+    Then, the backbone is created for each of the 6 combinations of the four colors.
+    Each backbone consists of each node in the two selected colors.
+    Six backbones from the coloring example above are included in figure \ref{six_backbones}.
+
+    \begin{figure}
+      \centering
+      \label{six_backbones}
+      \includegraphics[width=1 \textwidth]{walkthrough/largest_backbones}
+      \caption{The Six Largest Backbones for a graph with N=20, R=.4}
+    \end{figure}
+
+    In order to compute the domination of the backbones, an empty set is initialized.
+    Then, for each edge in the backbone both nodes are added to the set.
+    After all the edges are traversed the size of the set divided by N is the domination of the backbone.
+
+    All of these algorithms can be implemented in linear time trivially given the proper data structure selections.
+
   \subsection{Algorithm Engineering}
     \paragraph{Graph Generation}
     As mentioned above, the brute force algorithm to find adjacent nodes becomes slow at a fast rate.
@@ -345,6 +374,12 @@
 
     Overall, this yields $O(V+E)$ runtime.
 
+    \paragraph{Backbone Selection}
+    The only meaningful data structure choice in the backbone selection is the data structure used to represent the set during domination calculation.
+    A hash set is a great choice for this.
+    The built in set data structure in python has $O(1)$ insertion which is all that is needed for this algorithm.
+    By doing this, all of the algorithms required for backbone selection can run in $O(V+E)$.
+
 	\subsection{Verification}
 		One way that we verified our results was checking the distribution of edge densities in our graph.
 		We expect to see a gaussian distribution in the edge densities with the center being around our calculated radius.
@@ -434,6 +469,15 @@
       \caption{Distribution of the Size of Colors Used}
     \end{figure}
 
+    Some benchmark data related to the graph coloring is included in table \ref{coloring_benchmarks}.
+
+    \begin{table}
+      \centering
+      \label{coloring_benchmarks}
+  	  \csvautotabular{../results/benchmarks/coloring_benchmarks.csv}
+  	  \caption{Comparison of Runtimes of Generating the Different Topologies}
+    \end{table}
+
     \paragraph{Shortest Vertex Last Ordering vs Random Ordering}
     In order to further sell the implementation, I have plotted the number of colors used against various values of N for both shortest last vertex ordering and random ordering.
     Both of these algorithms run in linear time.
@@ -445,6 +489,101 @@
       \label{random_coloring_vs_slvo}
       \includegraphics[width=1 \textwidth]{comparison/number_colors.png}
       \caption{Random Order Coloring vs Shortest Last Vertex ordering}
+    \end{figure}
+
+    \paragraph{Backbone}
+    In order to verify that the backbones were being selected correctly, the top two backbones from each benchmark have been included in this report.
+
+
+    \begin{figure}
+      \centering
+      \label{backbone_32_1000_Square}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_32_1000_Square.png}
+      \caption{Top Two Backbones, N=1000, A=32, Topology Square}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{backbone_32_16000_Square}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_32_16000_Square.png}
+      \caption{Top Two Backbones, N=16000, A=32, Topology Square}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{backbone_64_8000_Disc}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_64_8000_Disc.png}
+      \caption{Top Two Backbones, N=8000, A=64, Topology Disc}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{backbone_64_8000_Square}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_64_8000_Square.png}
+      \caption{Top Two Backbones, N=8000, A=64, Topology Square}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{backbone_64_16000_Sphere}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_64_16000_Sphere.png}
+      \caption{Top Two Backbones, N=16000, A=64, Topology Sphere}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{backbone_64_64000_Disc}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_64_64000_Disc.png}
+      \caption{Top Two Backbones, N=64000, A=64, Topology Disc}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{backbone_64_64000_Square}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_64_64000_Square.png}
+      \caption{Top Two Backbones, N=64000, A=64, Topology Square}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{backbone_64_128000_Square}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_64_128000_Square.png}
+      \caption{Top Two Backbones, N=128000, A=64, Topology Square}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{backbone_128_32000_Sphere}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_128_32000_Sphere.png}
+      \caption{Top Two Backbones, N=32000, A=128, Topology Sphere}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{backbone_128_64000_Disc}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_128_64000_Disc.png}
+      \caption{Top Two Backbones, N=64000, A=128, Topology Disc}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{backbone_128_64000_Sphere}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_128_64000_Sphere.png}
+      \caption{Top Two Backbones, N=64000, A=128, Topology Sphere}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{backbone_128_64000_Square}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_128_64000_Square.png}
+      \caption{Top Two Backbones, N=64000, A=128, Topology Square}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{backbone_128_128000_Square}
+      \includegraphics[width=1 \textwidth]{backbone/backbone_128_128000_Square.png}
+      \caption{Top Two Backbones, N=128000, A=128, Topology Square}
     \end{figure}
 
 \section{Result Summary}

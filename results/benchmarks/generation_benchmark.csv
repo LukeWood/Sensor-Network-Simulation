@@ -1,0 +1,6 @@
+Benchmark,N,A,Topology,Avg. Degree,Min Degree,Max Degree,Generation Runtime
+1,1000,32,Square,28,6,48,0.768379
+2,8000,64,Square,61,14,101,10.670343
+3,16000,32,Square,31,7,53,10.027430
+4,64000,64,Square,62,19,97,77.688297
+5,64000,128,Square,125,38,173,154.284222
