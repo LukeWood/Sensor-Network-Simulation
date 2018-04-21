@@ -3,7 +3,7 @@
 \usepackage{amsmath}
 \usepackage{float}
 \usepackage{csvsimple}
-\usepackage{graphicx}
+\usepackage{graphicx}2
 \usepackage{adjustbox}
 
 \usepackage[citestyle=numeric,style=numeric, backend=bibtex8]{biblatex}
@@ -14,7 +14,7 @@
 
 \begin{document}
 
-  \title{Linear Time Generation and Coloring of Simulated Wireless Sensor Networks Simulated with Random Geometric Graphs}
+  \title{Linear Time Generation and Coloring of Wireless Sensor Networks Simulated with Random Geometric Graphs}
   \author{Luke Wood}
   \maketitle
 
@@ -45,16 +45,7 @@
   The coloring algorithms also run in $O(V+E)$ which is linear time as the edges are capped by the value A which is a constant.
   The runtimes could also be rewritten as $O(V + A*V)$ which is $O(V)$ assuming the A is a constant value.
 
-  \begin{table}
-    \label{benchmarks}
-    \centering
-    \begin{adjustbox}{width=1\textwidth}
-    \csvautotabular{../results/benchmarks/full_benchmark.csv}
-    \end{adjustbox}
-    \caption{Full Benchmark Data Generated, Subsets of this Data Available in Other Tables for Readability}
-  \end{table}
-
-  Reference table \ref{benchmarks} for the full benchmarks.
+  Reference tables \ref{generation_benchmarks}, \ref{coloring_benchmarks}, \ref{backbone_benchmarks} for the full benchmarks.
 
   \subsection{Programming Environment Description}
 		The implementation of the algorithm used to gather the data supporting this report was gathered on a 15 inch Macbook pro 2017 with a 2.9 GHz Intel Core i7 processor and 16 GB of RAM.
@@ -268,10 +259,18 @@
       \includegraphics[width=1 \textwidth]{walkthrough/largest_backbones}
       \caption{The Six Largest Backbones for a graph with N=20, R=.4}
     \end{figure}
-
     In order to compute the domination of the backbones, an empty set is initialized.
     Then, for each edge in the backbone both nodes are added to the set.
     After all the edges are traversed the size of the set divided by N is the domination of the backbone.
+
+    Figure \ref{dominations} shows the nodes dominated by each of these backbones..
+
+    \begin{figure}
+      \centering
+      \label{dominations}
+      \includegraphics[width=1 \textwidth]{walkthrough/backbone_dominations}
+      \caption{Nodes Dominated by the Six Largest Backbones for a Graph of N=20, R=.4}
+    \end{figure}
 
     All of these algorithms can be implemented in linear time trivially given the proper data structure selections.
 
@@ -471,13 +470,6 @@
 
     Some benchmark data related to the graph coloring is included in table \ref{coloring_benchmarks}.
 
-    \begin{table}
-      \centering
-      \label{coloring_benchmarks}
-  	  \csvautotabular{../results/benchmarks/coloring_benchmarks.csv}
-  	  \caption{Comparison of Runtimes of Generating the Different Topologies}
-    \end{table}
-
     \paragraph{Shortest Vertex Last Ordering vs Random Ordering}
     In order to further sell the implementation, I have plotted the number of colors used against various values of N for both shortest last vertex ordering and random ordering.
     Both of these algorithms run in linear time.
@@ -494,6 +486,7 @@
     \paragraph{Backbone}
     In order to verify that the backbones were being selected correctly, the top two backbones from each benchmark have been included in this report.
 
+    Additionally, some backbone specific benchmark data can be found in table \ref{backbone_benchmarks}.
 
     \begin{figure}
       \centering
@@ -587,7 +580,7 @@
     \end{figure}
 
 \section{Result Summary}
-  All of my algorithms ran in $O(n)$ time.
+  All of the implementations of algorithms used in this paper run in $O(n)$ time.
   There was variance between the runtime of the different topologies due to the way the points were generated combined with the calculation required to compute 2d distance vs 3d distance.
   Table \ref{runtime_comparison_by_topology} shows the runtime of all of the topologies in a table.
   Figures \ref{square_rgg_runtime_chart}, \ref{disc_rgg_runtime_chart}, and \ref{sphere_rgg_runtime_chart} show the individual runtime charts.
@@ -597,7 +590,7 @@
   \begin{table}
     \centering
     \label{runtime_comparison_by_topology}
-	  \csvautotabular{../results/shared/generation/generation_speeds.csv}
+	  \csvautotabular{../results/generation/generation_speeds.csv}
 	  \caption{Comparison of Runtimes of Generating the Different Topologies}
   \end{table}
 
@@ -625,9 +618,43 @@
   \begin{figure}
     \centering
     \label{all_rgg_runtimes_chart}
-    \includegraphics[width=1 \textwidth]{shared/generation/runtime/running_times}
+    \includegraphics[width=1 \textwidth]{generation/runtime/running_times}
     \caption{Runtimes of the $O(n)$ RGG Generation Algorithms overlayed}
   \end{figure}
+
+
+  \paragraph{}
+  The results for the rgg generation can be found in table \ref{generation_benchmarks}
+  \begin{table}
+    \centering
+    \label{generation_benchmarks}
+    \begin{adjustbox}{width=1\textwidth}
+	  \csvautotabular{../results/benchmarks/generation_benchmark.csv}
+    \end{adjustbox}
+	  \caption{RGG Generation Specific Benchmark Data}
+  \end{table}
+
+  \paragraph{}
+  The results for the rgg generation can be found in table \ref{coloring_benchmarks}
+  \begin{table}
+    \centering
+    \label{coloring_benchmarks}
+    \begin{adjustbox}{width=1\textwidth}
+	  \csvautotabular{../results/benchmarks/coloring_benchmark.csv}
+    \end{adjustbox}
+	  \caption{Coloring Specific Benchmark Data}
+  \end{table}
+
+  \paragraph{}
+  The results for the rgg generation can be found in table \ref{backbone_benchmarks}
+  \begin{table}
+    \centering
+    \label{backbone_benchmarks}
+    \begin{adjustbox}{width=1\textwidth}
+	  \csvautotabular{../results/benchmarks/backbones_benchmark.csv}
+    \end{adjustbox}
+	  \caption{Backbone Specific Benchmark Data}
+  \end{table}
 
 \printbibliography
 

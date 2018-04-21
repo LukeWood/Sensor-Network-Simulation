@@ -220,6 +220,42 @@ def draw_largest_backbones(backbones, positions, coloring):
     plt.savefig("../results/walkthrough/largest_backbones.png", bbox_inches="tight")
 
 
+
+def draw_dominations(backbones, positions, coloring, adj_list):
+    fig, axes = plt.subplots(2, 3)
+    x = 0
+    y = 0
+    colors = ['#6A1B9A', '#D50000', '#AEEA00', '#00B0FF', '#00B8D4', '#00BFA5', '#00C853', '#DD2C00', '#FFFF00']
+
+    for current_backbone in backbones:
+        G = nx.Graph()
+        color_map = {}
+        dominated_nodes = set()
+
+        for node_index, node in enumerate(current_backbone):
+            G.add_node(node_index)
+            if node == False:
+                continue
+            dominated_nodes.add(node_index)
+            for neighbor in adj_list[node_index]:
+                G.add_edge(node_index, neighbor)
+                dominated_nodes.add(neighbor)
+        pos = {}
+        for node_index, position in enumerate(positions):
+            pos[node_index] = position
+
+        color_map = [colors[coloring[x]] if current_backbone[x] != False else "#0000FF" if x in dominated_nodes else "#CCCCCC" for x in G.node]
+
+        nx.draw(G, pos=pos,node_color=color_map, ax=axes[y, x], node_size=50)
+        if x == 2:
+            x = 0
+            y = y + 1
+        else:
+            x = x + 1
+    plt.suptitle("Backbone Dominations for N=20, R=.4.")
+    plt.savefig("../results/walkthrough/backbone_dominations.png", bbox_inches="tight")
+
+
 if __name__ == "__main__":
     adj_list, positions = unit_square_graph(N, A, return_positions=True)
     ordering, ordering_states = compute_ordering(adj_list)
@@ -245,3 +281,5 @@ if __name__ == "__main__":
     largest_backbone_adj_lists.sort(key=lambda backbone: -len(flatten(filter(lambda n: n!=False,backbone))))
 
     draw_largest_backbones(largest_backbone_adj_lists, positions, coloring)
+
+    draw_dominations(largest_backbone_adj_lists, positions, coloring, adj_list)
