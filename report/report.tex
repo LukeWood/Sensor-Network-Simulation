@@ -320,19 +320,21 @@
     \begin{table}
       \centering
       \label{used_structures_slvo}
-      \begin{tabular}{ |c|c|c|c|c| }
-        \hline
-        Requirement & Data Structure & Access Time & Insertion Time & Deletion Time \\
-        \hline
-        Degree to set of Nodes & Dictionary & $O(1)$ & $O(1)$ & $O(1)$ \\
-        \hline
-        Set of Nodes & Set & $O(1)$ & $O(1)$ & $O(1)$ \\
-        \hline
-        Node to Degree & Dictionary & $O(1)$ & $O(1)$ & $O(1)$ \\
-        \hline
-        Ordering & Python List(Array) & $O(1)$ & $O(1)$ & $O(N)$ \\
-        \hline
-      \end{tabular}
+      \begin{adjustbox}{width=1\textwidth}
+        \begin{tabular}{ |c|c|c|c|c| }
+          \hline
+          Requirement & Data Structure & Access Time & Insertion Time & Deletion Time \\
+          \hline
+          Degree to set of Nodes & Dictionary & $O(1)$ & $O(1)$ & $O(1)$ \\
+          \hline
+          Set of Nodes & Set & $O(1)$ & $O(1)$ & $O(1)$ \\
+          \hline
+          Node to Degree & Dictionary & $O(1)$ & $O(1)$ & $O(1)$ \\
+          \hline
+          Ordering & Python List(Array) & $O(1)$ & $O(1)$ & $O(N)$ \\
+          \hline
+        \end{tabular}
+      \end{adjustbox}
       \caption{Data Structures Used in the Initialization for SLVO}
     \end{table}
 
@@ -343,17 +345,19 @@
     \begin{table}
       \centering
       \label{big_o_slvo}
-      \begin{tabular}{ |c|c| }
-        \hline
-        Select a node from a non-empty set mapped to by the smallest possible degree & $O(1)$ \\
-        \hline
-        Add this node to the ordering & $O(1)$ \\
-        \hline
-        Remove the node from the graph & $O(1)$ \\
-        \hline
-        Decrement all neighboring nodes one degree & $O(max(E))$ \\
-        \hline
-      \end{tabular}
+      \begin{adjustbox}{width=1\textwidth}
+        \begin{tabular}{ |c|c| }
+          \hline
+          Select a node from a non-empty set mapped to by the smallest possible degree & $O(1)$ \\
+          \hline
+          Add this node to the ordering & $O(1)$ \\
+          \hline
+          Remove the node from the graph & $O(1)$ \\
+          \hline
+          Decrement all neighboring nodes one degree & $O(max(E))$ \\
+          \hline
+        \end{tabular}
+      \end{adjustbox}
       \caption{Big O of Each Step}
     \end{table}
 
