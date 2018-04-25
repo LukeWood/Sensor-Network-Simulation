@@ -587,42 +587,20 @@
   All of the implementations of algorithms used in this paper run in $O(n)$ time.
   There was variance between the runtime of the different topologies due to the way the points were generated combined with the calculation required to compute 2d distance vs 3d distance.
   Table \ref{runtime_comparison_by_topology} shows the runtime of all of the topologies in a table.
-  Figures \ref{square_rgg_runtime_chart}, \ref{disc_rgg_runtime_chart}, and \ref{sphere_rgg_runtime_chart} show the individual runtime charts.
   Figure \ref{all_rgg_runtimes_chart} shows all of the runtimes of the different RGG generation algorithms overlaying each other.
   As discussed in the verification section, multiple plots have been used to verify the accuracy of the algorithms.
 
   \begin{table}
     \centering
     \label{runtime_comparison_by_topology}
-	  \csvautotabular{../results/generation/generation_speeds.csv}
+	  \csvautotabular{../results/comparison/generation_speeds.csv}
 	  \caption{Comparison of Runtimes of Generating the Different Topologies}
   \end{table}
 
   \begin{figure}
     \centering
-    \label{square_rgg_runtime_chart}
-    \includegraphics[width=1 \textwidth]{square/generation/runtime/runtime_chart}
-    \caption{Runtimes of the $O(n)$ Square RGG Generation Algorithm}
-  \end{figure}
-
-  \begin{figure}
-    \centering
-    \label{disc_rgg_runtime_chart}
-    \includegraphics[width=1 \textwidth]{disc/generation/runtime/runtime_chart}
-    \caption{Runtimes of the $O(n)$ Disc RGG Generation Algorithm}
-  \end{figure}
-
-  \begin{figure}
-    \centering
-    \label{sphere_rgg_runtime_chart}
-    \includegraphics[width=1 \textwidth]{sphere/generation/runtime/runtime_chart}
-    \caption{Runtimes of the $O(n)$ Sphere RGG Generation Algorithm}
-  \end{figure}
-
-  \begin{figure}
-    \centering
     \label{all_rgg_runtimes_chart}
-    \includegraphics[width=1 \textwidth]{generation/runtime/running_times}
+    \includegraphics[width=1 \textwidth]{comparison/running_times}
     \caption{Runtimes of the $O(n)$ RGG Generation Algorithms overlayed}
   \end{figure}
 
@@ -638,7 +616,7 @@
   \end{table}
 
   \paragraph{}
-  The results for the rgg generation can be found in table \ref{coloring_benchmarks}
+  The results for the rgg coloring can be found in table \ref{coloring_benchmarks}
   \begin{table}
     \centering
     \label{coloring_benchmarks}
@@ -649,7 +627,7 @@
   \end{table}
 
   \paragraph{}
-  The results for the rgg generation can be found in table \ref{backbone_benchmarks}
+  The results for the rgg backbones can be found in table \ref{backbone_benchmarks}
   \begin{table}
     \centering
     \label{backbone_benchmarks}
@@ -657,6 +635,17 @@
 	  \csvautotabular{../results/benchmarks/backbones_benchmark.csv}
     \end{adjustbox}
 	  \caption{Backbone Specific Benchmark Data}
+  \end{table}
+
+  \paragraph{}
+  The results for the overall runtimes can be found in table \ref{overall_runtime_benchmarks}
+  \begin{table}
+    \centering
+    \label{overall_runtime_benchmarks}
+    \begin{adjustbox}{width=1\textwidth}
+    \csvautotabular{../results/benchmarks/summary_benchmark.csv}
+    \end{adjustbox}
+    \caption{Summary of Runtime Benchmark Data}
   \end{table}
 
 \printbibliography

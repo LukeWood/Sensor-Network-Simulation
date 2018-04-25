@@ -1,6 +1,6 @@
-from generate_graphs import unit_square_graph
-from generate_graphs import unit_disc_graph
-from generate_graphs import unit_sphere_graph
+from rgg.generate_graphs import unit_square_graph
+from rgg.generate_graphs import unit_disc_graph
+from rgg.generate_graphs import unit_sphere_graph
 
 from time import process_time
 
@@ -11,7 +11,7 @@ def time_run(fn, N, A):
     return end - start
 
 A=64
-Ns=[10, 1000, 2500, 5000, 16000, 32000]
+Ns=[10, 1000, 2500, 5000, 16000, 32000, 64000]
 
 def runtime_chart(Ns, runtimes, name=None, expected_order=1):
     import seaborn as sns
@@ -37,4 +37,4 @@ plt.gca().set_ylim(bottom=0)
 
 import matplotlib.pyplot as plt
 plt.title("Runtimes for All Topologies")
-plt.savefig("../results/shared/runtime/running_times.png", bbox_inches="tight")
+plt.savefig("../results/comparison/running_times.png", bbox_inches="tight")

@@ -8,6 +8,7 @@ benchmark_indices = {
     "generation": ["Benchmark", "N", "A", "Topology", "Avg. Degree", "Min Degree", "Max Degree", "Generation Runtime"],
     "coloring": ["Benchmark", "N", "A", "Topology", "Average Degree When Removed", "Colors", "Largest Color", "Coloring Runtime"],
     "backbones": ["Benchmark", "N", "A", "Topology", "Backbone Order", "Backbone Size", "Backbone Domination", "Number of Backbone Faces", "Backbone Runtime"]
+    "summary": ["Benchmark", "N", "A", "Topology", "Generation Runtime", "Coloring Runtime", "Backbone Runtime", "Total Runtime"]
 }
 
 benchmark_data = {}
