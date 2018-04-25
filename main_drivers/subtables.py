@@ -1,14 +1,14 @@
-headers = ["Benchmark","N","A","R","Topology","Avg. Degree","Min Degree",
-    "Max Degree","Average Degree When Removed","Colors","Largest Color",
+headers = ["Benchmark","N","A","R","Topology","Num Edges","Avg. Degree","Min Degree",
+    "Max Degree","Average Degree When Removed","Colors","Largest Color", "Terminal Clique Size",
     "Backbone Order","Backbone Size","Backbone Domination",
     "Number of Backbone Faces",
-    "Generation Runtime", "Coloring Runtime", "Backbone Runtime", "Total Runtime"]
+    "Generation Runtime (Seconds)", "Coloring Runtime (Seconds)", "Backbone Runtime (Seconds)", "Total Runtime (Seconds)"]
 
 benchmark_indices = {
-    "generation": ["Benchmark", "N", "A", "Topology", "Avg. Degree", "Min Degree", "Max Degree", "Generation Runtime"],
-    "coloring": ["Benchmark", "N", "A", "Topology", "Average Degree When Removed", "Colors", "Largest Color", "Coloring Runtime"],
-    "backbones": ["Benchmark", "N", "A", "Topology", "Backbone Order", "Backbone Size", "Backbone Domination", "Number of Backbone Faces", "Backbone Runtime"]
-    "summary": ["Benchmark", "N", "A", "Topology", "Generation Runtime", "Coloring Runtime", "Backbone Runtime", "Total Runtime"]
+    "generation": ["Benchmark", "N", "A", "Topology","Num Edges", "Avg. Degree", "Min Degree", "Max Degree", "Generation Runtime (Seconds)"],
+    "coloring": ["Benchmark", "N", "A", "Topology", "Average Degree When Removed", "Colors", "Largest Color", "Terminal Clique Size", "Coloring Runtime (Seconds)"],
+    "backbones": ["Benchmark", "N", "A", "Topology", "Backbone Order", "Backbone Size", "Backbone Domination", "Number of Backbone Faces", "Backbone Runtime (Seconds)"],
+    "summary": ["Benchmark", "N", "A", "Topology", "Generation Runtime (Seconds)", "Coloring Runtime (Seconds)", "Backbone Runtime (Seconds)", "Total Runtime (Seconds)"]
 }
 
 benchmark_data = {}

@@ -1,7 +1,7 @@
 from rgg.generate_graphs import unit_square_graph
 from rgg.generate_graphs import unit_disc_graph
 from rgg.generate_graphs import unit_sphere_graph
-
+import matplotlib.pyplot as plt
 from time import process_time
 
 def time_run(fn, N, A):
@@ -34,6 +34,7 @@ runtime_chart(Ns, runtimes_sphere)
 
 plt.gca().set_xlim(left=0)
 plt.gca().set_ylim(bottom=0)
+plt.legend(labels=["Square", "Disc", "Sphere"])
 
 import matplotlib.pyplot as plt
 plt.title("Runtimes for All Topologies")

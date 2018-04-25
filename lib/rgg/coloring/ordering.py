@@ -4,7 +4,7 @@ def first_of_set(s):
     for item in s: break
     return item
 
-def compute_ordering(adj_list):
+def compute_ordering(adj_list, return_terminal_clique_size=False):
     ordering = []
     max_degree = max(map(lambda x: len(x), adj_list))
     length_to_nodes = {}
@@ -19,11 +19,13 @@ def compute_ordering(adj_list):
     for i, node in enumerate(adj_list):
         degree = len(node)
         length_to_nodes[degree].add(i)
-
+    terminal_clique_size = 1
     while len(ordering) != len(adj_list):
         index = 0
         while len(length_to_nodes[index]) == 0:
             index=index + 1
+        if index == (len(adj_list) - len(ordering)):
+            terminal_clique_size = len(adj_list) - len(ordering)
         node = first_of_set(length_to_nodes[index])
         ordering.append(node)
         lengths_when_removed[node] = node_to_length[node]
@@ -34,4 +36,7 @@ def compute_ordering(adj_list):
                 length_to_nodes[neighbor_len].remove(neighbor)
                 length_to_nodes[neighbor_len-1].add(neighbor)
         length_to_nodes[index].remove(node)
-    return ordering[::-1], lengths_when_removed
+    if return_terminal_clique_size:
+        return ordering[::-1], lengths_when_removed, terminal_clique_size
+    else:
+        return ordering[::-1], lengths_when_removed

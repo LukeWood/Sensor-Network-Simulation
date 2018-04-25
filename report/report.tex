@@ -65,7 +65,7 @@
     This section will also give a detailed analysis of the algorithms used in this project as well as their asymptotic runtimes.
 	\subsection{Data Structure Design}
 		The generation portion of this project uses several different data structures.
-		The first one is a python object of custom type node.
+		The first one is a python object with attributes of a tuple of dimensions and a node number.
 		This serves as a tuple of values consisting of a list of dimensions, a list of nodes, and a node number.
 		The first two are used during graph generation and the latter during conversion to an adjacency list.
 		This data structure could be used interchangeably with a statically indexed tuple instead of an object to avoid any overhead associated with objects in python, however the readability gained from using a custom node class heavily outweighs the marginal performance benefit gained from using a statically indexed tuple.
@@ -102,23 +102,13 @@
     This algorithm is $\Theta(n)$.
 
   \paragraph{Disc Point Generation}
-		Generating the points on the disc topology is slightly more challenging than generating the points for the square topology.
-    The algorithm for generating points used in the implementation descriped in this point is as follows:
+    The algorithm for generating disc points used in the implementation follows these steps:
     \begin{enumerate}
-      \item x=random(0, 1), y=random(0,1)
-      \item if the distance from (x,y) to (.5, .5) is < .5, add (x,y) to a list of points
-      \item repeat steps 1 and 2 until N points are created
+      \item r=$random(0, 1)$, $\theta=2*\pi*random(0, 1)$
+      \item $x=\sqrt{r}*cos(\theta)$
+      \item $y=\sqrt{r}*sin(\theta)$
     \end{enumerate}
-    The issue with this algorithm is the nondeterminism involved in creating each point.
-    When generating large numbers of points lots of work is wasted on generating the unused random points.
-    In future iterations of this project a mathematical approach may be used to generated these points.
-    Despite the non-determinism, this algorithm is still amortized $\Theta(n)$.
-
-    A possible approach to fixing this implementation would be to pick a radius between 0 and 1, and then rotate by a random number of radians between 0 and 2$\pi$.
-    This was not implemented as I was unsure if this would produce a uniform distribution.
-
-    This is not pure $O(n)$ as due to the non-determinism it could theoretically run indefinitely.
-    This is however of lower probability than flipping a coin repeateadly and getting heads for all eternity.
+    This algorithm is $\Theta(n)$.
 
   \paragraph{Sphere Point Generation}
     Generating points on the surface of the unit sphere can be solved using math.
@@ -166,13 +156,13 @@
       \caption{Runtimes of the $O(n^2)$ Algorithm}
     \end{figure}
     Instead, the implementation uses a bucket method to narrow down the required number of comparisons.
-    The idea for this algorithm comes from the paprer Bipartite Grid Partitioning of a Random Geometric Graph\cite{chen2017bipartite}.
+    The idea for this algorithm comes from the paper Bipartite Grid Partitioning of a Random Geometric Graph\cite{chen2017bipartite}.
     The algorithm can be broken down into steps as follows:
 
     \begin{enumerate}
       \item create $(\sqrt{1/R} - 1 )^2$ buckets
       \item place buckets in a 2D grid arrangement
-      \item for each node, place the node in bucket (x, y) such that x=$floor(x*num_buckets)$, y=$floor(y*num_buckets)$
+      \item for each node, place the node in bucket (x, y) such that x=$floor(x*num\_buckets)$, y=$floor(y*num\_buckets)$
       \item for each x,y such that x=0..buckets, y=0..buckets
       \item check to see if each node in bucket (x,y) is within radius R to all others in bucket (x,y) as well as (x+1,y-1), (x+1,y), (x,y+1), (x+1,y+1)
       \item if two nodes are under radius R from each other, place an edge between them.
@@ -204,8 +194,8 @@
     \begin{enumerate}
       \item Select a node from a non-empty set mapped to by the smallest possible degree
       \item Add this node to the ordering
-      \item Remove the node from the graph, this entails decrementing the degree of all neighbors and removing the node from the sets above.
-      \item Move all of the neighboring nodes one hash set lower in the map mapping from degree to nodes
+      \item Remove the node from the graph, this entails decrementing the degree of all neighbors and removing the node from the sets above.  In order to preserve linear time this is done using a hash table that maps from the nodes to their respective bucket.
+      \item Move all of the neighboring nodes one hash set lower in the map mapping from degree to nodes.  This is also done using the mapping from node number to bucket number.
     \end{enumerate}
     Figure \ref{ordering_graph} shows this process for a graph with 20 nodes.
     After the ordering is complete, the ordering is then used to color the graph.
@@ -447,17 +437,30 @@
 
     \paragraph{Ordering}
     A plot displaying the degrees of the graph against the degrees of nodes when they are removed from the graph during shortest last vertex ordering can be used to make sure the ordering process is behaving as expected.
-    Figure \ref{ordering_removal_degrees} shows the expected behavior.
-    Both of the plots follow a normal distribution.
+    Figures \ref{ordering_removal_degrees_square}, \ref{ordering_removal_degrees_disc}, and \ref{ordering_removal_degrees_sphere} show the expected behavior.
     The degrees when removed having a much lower standard deviation along with a lower average.
     The degrees when the graph is generated have a higher standard deviation and a higher average.
     This is the expected result.
 
     \begin{figure}
       \centering
-      \label{ordering_removal_degrees}
+      \label{ordering_removal_degrees_square}
+      \includegraphics[width=1 \textwidth]{square/coloring/degree_frequencies.png}
+      \caption{Degree Densities when Nodes are Removed During Shortest Vertex Last Ordering Square}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{ordering_removal_degrees_disc}
       \includegraphics[width=1 \textwidth]{disc/coloring/degree_frequencies.png}
-      \caption{Degree Densities when Nodes are Removed During Shortest Vertex Last Ordering}
+      \caption{Degree Densities when Nodes are Removed During Shortest Vertex Last Ordering Disc}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \label{ordering_removal_degrees_sphere}
+      \includegraphics[width=1 \textwidth]{sphere/coloring/degree_frequencies.png}
+      \caption{Degree Densities when Nodes are Removed During Shortest Vertex Last Ordering Sphere}
     \end{figure}
 
     \paragraph{Coloring}

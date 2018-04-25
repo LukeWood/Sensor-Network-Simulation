@@ -62,11 +62,11 @@ def draw_backbone(backbones, positions, coloring, A, N, topology):
     plt.savefig("../results/backbone/backbone_%d_%d_%s.png" % (N, A, topology), bbox_inches="tight")
 
 with open("../results/benchmarks/full_benchmark.csv", "w+") as f:
-    headers = ["Benchmark","N","A","R","Topology","Avg. Degree","Min Degree",
-        "Max Degree","Average Degree When Removed","Colors","Largest Color",
+    headers = ["Benchmark","N","A","R","Topology","Num Edges","Avg. Degree","Min Degree",
+        "Max Degree","Average Degree When Removed","Colors","Largest Color", "Terminal Clique Size",
         "Backbone Order","Backbone Size","Backbone Domination",
         "Number of Backbone Faces",
-        "Generation Runtime", "Coloring Runtime", "Backbone Runtime", "Total Runtime"]
+        "Generation Runtime (Seconds)", "Coloring Runtime (Seconds)", "Backbone Runtime (Seconds)", "Total Runtime (Seconds)"]
     f.write(",".join(headers)+"\n")
     for benchmark, N, A, topology, fn in benchmarks:
         print("Running benchmark %d" % benchmark)
@@ -74,7 +74,7 @@ with open("../results/benchmarks/full_benchmark.csv", "w+") as f:
         adj_list,positions, R = fn(N, A, return_radius=True, return_positions=True)
         end_generation = process_time()
         start_coloring = end_generation
-        ordering, degrees_when_removed = compute_ordering(adj_list)
+        ordering, degrees_when_removed, terminal_clique_size = compute_ordering(adj_list, return_terminal_clique_size=True)
         coloring = color_graph(ordering, adj_list)
         end_coloring = process_time()
         start_backbone = end_coloring
@@ -131,9 +131,19 @@ with open("../results/benchmarks/full_benchmark.csv", "w+") as f:
             num_faces = 2 + num_edges - len(backbone_nodes)
             num_faces = str(num_faces)
 
+        from math import sqrt
+        from math import pi
+        if topology == "Square":
+            R=sqrt(A /(N * pi))
+        elif topology == "Disc":
+            R=sqrt(A/N)
+        elif topology == "Sphere":
+            R=sqrt(2*A/N)
+
         f.write("%d,%d,%d,%.6f," % (benchmark, N, A, R))
-        f.write("%s,%d,%d,%d," % (topology,avg_degree,min_degree,max_degree))
-        f.write("%d,%d,%d,%d," % (max_degree_when_removed, num_colors,largest_color,backbone_order))
-        f.write("%d,%.6f,%s,%.6f,%.6f,%.6f,%.6f" % (backbone_size, backbone_domination, num_faces,generation_runtime,coloring_runtime, backbone_runtime, runtime))
+        f.write("%s,%d,%.6f,%d,%d," % (topology, avg_degree*N,avg_degree,min_degree,max_degree))
+        f.write("%d,%d,%d,%d,%d," % (max_degree_when_removed, num_colors,largest_color, terminal_clique_size, backbone_order))
+        f.write("%d,%.6f,%s,%.6f," % (backbone_size, backbone_domination, num_faces,generation_runtime))
+        f.write("%.6f,%.6f,%.6f" %(coloring_runtime, backbone_runtime, runtime))
         f.write("\n")
         f.flush()
